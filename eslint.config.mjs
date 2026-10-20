@@ -17,5 +17,5 @@ export default [
       }],
     },
   },
-  globalIgnores(['.next/**', 'src/payload-types.ts', 'src/payload-generated-schema.ts', 'coverage/**', 'playwright-report/**', 'test-results/**']),
+  globalIgnores(['.next/**', 'src/payload-types.ts', 'src/payload-generated-schema.ts', 'coverage/**', 'playwright-report/**', 'test-results/**', 'tools/*.cjs']),
 ]
