@@ -4,7 +4,9 @@ import { contentBlocks } from '@/blocks/content'
 export const Projects: CollectionConfig = {
   slug: 'projects',
   labels: { singular: 'Кейс', plural: 'Кейсы' },
-  admin: { useAsTitle: 'title', defaultColumns: ['title', 'slug', 'year', 'updatedAt'], group: 'Контент' },
+  admin: {
+    preview: ({ data }) => (process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000') + '/api/preview?path=' + encodeURIComponent((data as {sourcePath?: string }).sourcePath || '/work'),
+    useAsTitle: 'title', defaultColumns: ['title', 'slug', 'year', 'updatedAt'], group: 'Контент' },
   versions: { drafts: true, maxPerDoc: 40 },
   access: {
     read: ({ req }) => req.user ? true : { _status: { equals: 'published' } },

@@ -74,8 +74,9 @@ for (const page of pages) {
         coverPath:page.cover||page.images[0]||'',
         sections:blocks as never,
         seoDescription:page.intro,
-        // Source template's article texts must be editorially reviewed before publishing.
-        _status:'draft',
+        editorialReviewed: false,
+        // Imported material remains searchable only after editorial approval.
+        _status:'published',
       },
     })
     inserted++

@@ -27,4 +27,4 @@ COPY --from=build /app/tsconfig.json ./tsconfig.json
 RUN mkdir -p /app/data /app/uploads && chown -R node:node /app
 USER node
 EXPOSE 3000
-CMD ["node", "node_modules/next/dist/bin/next", "start", "-p", "3000", "-H", "0.0.0.0"]
+CMD ["sh", "-c", "./node_modules/.bin/payload migrate && ./node_modules/.bin/next start -p 3000 -H 0.0.0.0"]

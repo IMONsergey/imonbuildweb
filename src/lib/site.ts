@@ -1,6 +1,8 @@
 import source from '@/content/source.json'
 import config from '@/payload.config'
-import { getPayload } from 'payload'
+import { getPayload, type Payload } from 'payload'
+import { cookies } from 'next/headers'
+import { validatePreviewToken } from './previewToken'
 import type { Article, Page, Project } from '@/payload-types'
 
 export type OriginalPage = {
@@ -23,6 +25,7 @@ export type ContentProject = OriginalPage | Project
 export type ContentArticle = OriginalPage | Article
 
 const originals = source as OriginalPage[]
+const emergencySnapshot = process.env.IMON_ENABLE_SOURCE_SNAPSHOT === '1'
 
 export const fallbackNavigation = [
   { label: 'О нас', href: '/about' },
@@ -44,101 +47,99 @@ export const originalProjects = originals.filter(page => page.kind === 'case')
 export const originalWork = originalProjects.filter(page => page.path.startsWith('/work/'))
 export const originalArticles = originals.filter(page => page.kind === 'article')
 
-async function cms() {
-  try { return await getPayload({ config }) } catch (err) {
-    console.error('CMS unavailable, serving authored source snapshot', err instanceof Error ? err.message : err)
+async function cms(): Promise<Payload | null> {
+  try {
+    return await getPayload({ config })
+  } catch (error) {
+    if (!emergencySnapshot) throw error
+    console.error('CMS unavailable: explicitly enabled offline source snapshot mode')
     return null
   }
+}
+
+async function previewAuthorized(path: string, urlToken?: string): Promise<boolean> {
+  if (validatePreviewToken(urlToken, path)) return true
+  return validatePreviewToken((await cookies()).get('imon-preview-token')?.value, path)
 }
 
 export async function siteSettings() {
   const payload = await cms()
   if (!payload) return { settings: fallbackSettings, links: fallbackNavigation }
-  try {
-    const [settings, nav] = await Promise.all([
-      payload.findGlobal({ slug: 'site-settings' }),
-      payload.findGlobal({ slug: 'navigation' }),
-    ])
-    const links = Array.isArray(nav.links) && nav.links.length
-      ? nav.links.filter(link => !!link.href && !!link.label).map(link => ({ label: link.label, href: link.href }))
-      : fallbackNavigation
-    return {
-      settings: { ...fallbackSettings, ...settings },
-      links,
-    }
-  } catch {
-    return { settings: fallbackSettings, links: fallbackNavigation }
+  const [settings, nav] = await Promise.all([
+    payload.findGlobal({ slug: 'site-settings' }),
+    payload.findGlobal({ slug: 'navigation' }),
+  ])
+  const links = Array.isArray(nav.links) && nav.links.length
+    ? nav.links.filter(link => !!link.href && !!link.label).map(link => ({
+      label: link.label,
+      href: link.href,
+    }))
+    : fallbackNavigation
+  return {
+    settings: { ...fallbackSettings, ...settings },
+    links,
   }
 }
 
-export async function sitePage(path: string): Promise<ContentPage | undefined> {
+export async function sitePage(path: string, urlToken?: string): Promise<ContentPage | undefined> {
   const payload = await cms()
-  if (payload) {
-    try {
-      const result = await payload.find({
-        collection: 'pages', limit: 1, depth: 2,
-        where: { path: { equals: path }, _status: { equals: 'published' } },
-      })
-      if (result.docs[0]) return result.docs[0]
-    } catch (err) { console.error('Failed to read page', path, err instanceof Error ? err.message : err) }
-  }
-  return originalPage(path)
+  if (!payload) return originalPage(path)
+  const preview = await previewAuthorized(path, urlToken)
+  const result = await payload.find({
+    collection: 'pages', limit: 1, depth: 2, draft: preview,
+    where: preview
+      ? { path: { equals: path } }
+      : { and: [{ path: { equals: path } }, { _status: { equals: 'published' } }] },
+  })
+  return result.docs[0]
 }
 
 export async function siteProjects(): Promise<ContentProject[]> {
   const payload = await cms()
-  if (payload) {
-    try {
-      const result = await payload.find({
-        collection: 'projects', limit: 100, depth: 2, sort: 'order',
-        where: { _status: { equals: 'published' } },
-      })
-      if (result.docs.length) return result.docs.filter(item => item.sourcePath.startsWith('/work/'))
-    } catch (err) { console.error('Failed to read projects', err instanceof Error ? err.message : err) }
-  }
-  return originalWork
+  if (!payload) return originalWork
+  const preview = await previewAuthorized('/work')
+  const result = await payload.find({
+    collection: 'projects', limit: 100, depth: 2, draft: preview, sort: 'order',
+    where: preview ? {} : { _status: { equals: 'published' } },
+  })
+  return result.docs.filter(project => project.sourcePath.startsWith('/work/'))
 }
 
-export async function siteProject(path: string): Promise<ContentProject | undefined> {
+export async function siteProject(path: string, urlToken?: string): Promise<ContentProject | undefined> {
   const payload = await cms()
-  if (payload) {
-    try {
-      const result = await payload.find({
-        collection: 'projects', limit: 1, depth: 2,
-        where: { sourcePath: { equals: path }, _status: { equals: 'published' } },
-      })
-      if (result.docs[0]) return result.docs[0]
-    } catch (err) { console.error('Failed to read case', err instanceof Error ? err.message : err) }
-  }
-  return originalPage(path)
+  if (!payload) return originalPage(path)
+  const preview = await previewAuthorized(path, urlToken)
+  const result = await payload.find({
+    collection: 'projects', limit: 1, depth: 2, draft: preview,
+    where: preview
+      ? { sourcePath: { equals: path } }
+      : { and: [{ sourcePath: { equals: path } }, { _status: { equals: 'published' } }] },
+  })
+  return result.docs[0]
 }
 
 export async function siteArticles(): Promise<ContentArticle[]> {
   const payload = await cms()
-  if (payload) {
-    try {
-      const result = await payload.find({
-        collection: 'articles', limit: 100, depth: 2, sort: '-publishedAt',
-        where: { _status: { equals: 'published' } },
-      })
-      if (result.docs.length) return result.docs
-    } catch (err) { console.error('Failed to read articles', err instanceof Error ? err.message : err) }
-  }
-  return originalArticles
+  if (!payload) return originalArticles
+  const preview = await previewAuthorized('/news')
+  const result = await payload.find({
+    collection: 'articles', limit: 100, depth: 2, draft: preview, sort: '-publishedAt',
+    where: preview ? {} : { _status: { equals: 'published' } },
+  })
+  return result.docs
 }
 
-export async function siteArticle(slug: string): Promise<ContentArticle | undefined> {
+export async function siteArticle(slug: string, urlToken?: string): Promise<ContentArticle | undefined> {
   const payload = await cms()
-  if (payload) {
-    try {
-      const result = await payload.find({
-        collection: 'articles', limit: 1, depth: 2,
-        where: { slug: { equals: slug }, _status: { equals: 'published' } },
-      })
-      if (result.docs[0]) return result.docs[0]
-    } catch (err) { console.error('Failed to read article', err instanceof Error ? err.message : err) }
-  }
-  return originalPage('/news/' + slug)
+  if (!payload) return originalPage('/news/' + slug)
+  const preview = await previewAuthorized('/news/' + slug, urlToken)
+  const result = await payload.find({
+    collection: 'articles', limit: 1, depth: 2, draft: preview,
+    where: preview
+      ? { slug: { equals: slug } }
+      : { and: [{ slug: { equals: slug } }, { _status: { equals: 'published' } }] },
+  })
+  return result.docs[0]
 }
 
 export function field<T = string>(entity: ContentPage | ContentProject | ContentArticle, key: string, fallback: T): T {

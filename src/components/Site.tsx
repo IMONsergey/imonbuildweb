@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { SiteHeader, FilteredGrid, LeadForm } from './Interactive'
+import { PreviewIndicator } from './PreviewIndicator'
+import { RichText } from '@payloadcms/richtext-lexical/react'
 import { defaultBlocks, type DisplayBlock } from '@/lib/defaultBlocks'
 import {
   type ContentPage, type ContentProject, type ContentArticle, type OriginalPage,
@@ -29,11 +31,11 @@ function Visual({ src, alt = '', className = '', priority = false }: { src: stri
   return <img src={src} className={className} alt={alt} loading={priority ? 'eager' : 'lazy'} decoding="async" />
 }
 
-export async function SiteShell({ children, overlay = false }: { children: ReactNode; overlay?: boolean }) {
+export async function SiteShell({ children, overlay = false, isPreview = false }: { children: ReactNode; overlay?: boolean; isPreview?: boolean }) {
   const { settings, links } = await siteSettings()
   return <div className="site-shell">
     <SiteHeader overlay={overlay} links={links} />
-    <main id="main-content">{children}</main>
+    <main id="main-content">{children}</main><PreviewIndicator forceVisible={isPreview} />
     <footer className="site-footer">
       <div className="footer-top"><span>Меню</span><nav aria-label="Нижняя навигация">{links.map(link => <Link key={link.href} href={link.href}>{link.label}</Link>)}<Link href="/contact">Контакт</Link></nav></div>
       <div className="footer-main"><p>{settings.footerMessage || 'Обсудим следующий уровень вашего бизнеса'}</p><Link href="/contact">Обсудить задачу <span>↗</span></Link></div>
@@ -45,7 +47,7 @@ export async function SiteShell({ children, overlay = false }: { children: React
 function normalizedBlocks(page: ContentPage | ContentProject | ContentArticle): DisplayBlock[] {
   const record=page as unknown as Record<string, unknown>
   const direct=(record.blocks || record.sections)
-  return Array.isArray(direct) ? direct as DisplayBlock[] : defaultBlocks(page as OriginalPage)
+  return Array.isArray(direct) ? direct as DisplayBlock[] : 'id' in page ? [] : defaultBlocks(page as OriginalPage)
 }
 
 function defaultDescription(p: ContentPage | ContentProject | ContentArticle): string {
@@ -104,7 +106,7 @@ export async function Blocks({ blocks }: { blocks: DisplayBlock[] }) {
   return <>{sections}</>
 }
 
-export async function PageView({ page }: { page: ContentPage }) {
+export async function PageView({ page, isPreview = false }: { page: ContentPage; isPreview?: boolean }) {
   const kind=field<string>(page,'kind','standard')
   const title=field(page,'title','I’MON')
   const intro=field(page,'intro','')
@@ -117,9 +119,9 @@ export async function PageView({ page }: { page: ContentPage }) {
     const styledHeadline = headline === fallback.texts[0]
       ? <><span className="hero-title-line">Бренд, продукт</span><span className="hero-title-line">и digital — как</span><span className="hero-title-line">единая <span className="hero-mobile-line">система</span></span></>
       : headline
-    return <SiteShell overlay><section className="hero-video" aria-label="I’MON — бренд, продукт и digital">
+    return <SiteShell overlay isPreview={isPreview}><section className="hero-video" aria-label="I’MON — бренд, продукт и digital">
       {video ? <video className="hero-video__background" autoPlay muted playsInline loop preload="metadata" poster="/media/hero-poster.jpg" aria-hidden="true" key={video}>
-        {video === '/media/hero-desktop.mp4' && <source src="/media/hero-mobile.mp4" type="video/mp4" media="(max-width: 700px)" />}
+        {video.endsWith('/hero-desktop.mp4') && <source src="/media/hero-mobile.mp4" type="video/mp4" media="(max-width: 700px)" />}
         <source src={video} type="video/mp4" />
       </video> : heroImage && <img className="hero-video__background" src={heroImage} alt="" />}
       <div className="hero-video__shade" /><h1>{styledHeadline}</h1><span className="hero-year">©{new Date().getFullYear()}</span><p className="hero-caption">{field(page,'intro',fallback.texts[2])||fallback.texts[2]}</p>
@@ -129,25 +131,25 @@ export async function PageView({ page }: { page: ContentPage }) {
   const defaultIntro=kind==='work'?'Проекты, в которых стратегия, дизайн и digital работают как одна система.':kind==='news'?'Мысли об управлении брендом, продуктом и цифровыми коммуникациями.':kind==='contact'?'Обсудим контекст вашей задачи и найдём подходящий формат работы.':'Работаем в момент перехода бизнеса на следующий уровень.'
   const displayIntro = ['work','news','contact','about'].includes(kind) ? defaultIntro : intro
   const visibleIntro = 'id' in page ? (intro || defaultIntro) : displayIntro
-  return <SiteShell><section className="inside-hero"><div className="inside-hero__top"><p>{visibleIntro}</p></div><div className="inside-hero__bottom"><h1>{sectionName}</h1><span>({kind==='work'?'2016—2026':kind==='news'?'Журнал':kind==='contact'?'Напишите нам':'I’MON'})</span></div></section>
+  return <SiteShell isPreview={isPreview}><section className="inside-hero"><div className="inside-hero__top"><p>{visibleIntro}</p></div><div className="inside-hero__bottom"><h1>{sectionName}</h1><span>({kind==='work'?'2016—2026':kind==='news'?'Журнал':kind==='contact'?'Напишите нам':'I’MON'})</span></div></section>
     {kind==='contact' && <section className="contact-info-strip"><div><small>По проектам</small><a href="mailto:info@imon.agency">info@imon.agency ↗</a></div><div><small>Telegram</small><a href="https://t.me/imonagency" target="_blank" rel="noopener noreferrer">@imonagency ↗</a></div></section>}
     <Blocks blocks={blocks}/></SiteShell>
 }
 
-export async function ProjectView({ project }: { project: ContentProject }) {
+export async function ProjectView({ project, isPreview = false }: { project: ContentProject; isPreview?: boolean }) {
   const title=field(project,'title','Проект')
   const summary=defaultDescription(project)
   const cover=entityCover(project)
   const blocks=normalizedBlocks(project)
-  return <SiteShell><section className="case-hero"><div className="case-hero__caption"><span>Кейс / {field(project,'category','Digital')}</span><span>{field(project,'year','')}</span></div><h1>{title}</h1><p>{summary}</p><div className="case-meta"><div><span>Клиент</span><strong>{field(project,'client',title)}</strong></div><div><span>Год</span><strong>{field(project,'year','')}</strong></div><div><span>Работы</span><strong>{field(project,'category','Бренд, UX/UI, Digital')}</strong></div></div></section>
+  return <SiteShell isPreview={isPreview}><section className="case-hero"><div className="case-hero__caption"><span>Кейс / {field(project,'category','Digital')}</span><span>{field(project,'year','')}</span></div><h1>{title}</h1><p>{summary}</p><div className="case-meta"><div><span>Клиент</span><strong>{field(project,'client',title)}</strong></div><div><span>Год</span><strong>{field(project,'year','')}</strong></div><div><span>Работы</span><strong>{field(project,'category','Бренд, UX/UI, Digital')}</strong></div></div></section>
     {cover && <div className="case-lead-image"><Visual src={cover} alt={title} priority/></div>}
     <Blocks blocks={blocks}/></SiteShell>
 }
 
-export async function ArticleView({ article }: { article: ContentArticle }) {
+export async function ArticleView({ article, isPreview = false }: { article: ContentArticle; isPreview?: boolean }) {
   const title=field(article,'title','Публикация')
   const source=originalPage('/news/'+field(article,'slug',''))
   const blocks=normalizedBlocks(article)
   const cover=entityCover(article)
-  return <SiteShell><article className="article-page"><header className="article-header"><div><span>{field(article,'category','Журнал')}</span><span>{field(article,'date','')}</span></div><h1>{title}</h1><p>{field(article,'excerpt',source?.intro||'')}</p></header>{cover && <div className="article-cover"><Visual src={cover} alt={title} priority /></div>}<Blocks blocks={blocks}/></article></SiteShell>
+  return <SiteShell isPreview={isPreview}><article className="article-page"><header className="article-header"><div><span>{field(article,'category','Журнал')}</span><span>{field(article,'date','')}</span></div><h1>{title}</h1><p>{field(article,'excerpt',source?.intro||'')}</p></header>{cover && <div className="article-cover"><Visual src={cover} alt={title} priority /></div>}{'body' in article && article.body && <section className="section richtext-content"><RichText data={article.body} /></section>}<Blocks blocks={blocks}/></article></SiteShell>
 }

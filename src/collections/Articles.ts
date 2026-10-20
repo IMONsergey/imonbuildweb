@@ -4,7 +4,9 @@ import { contentBlocks } from '@/blocks/content'
 export const Articles: CollectionConfig = {
   slug: 'articles',
   labels: { singular: 'Публикация', plural: 'Журнал' },
-  admin: { useAsTitle: 'title', defaultColumns: ['title', 'category', '_status', 'updatedAt'], group: 'Контент' },
+  admin: {
+    preview: ({ data }) => (process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000') + '/api/preview?path=' + encodeURIComponent('/news/' + ((data as {slug?: string }).slug || '')),
+    useAsTitle: 'title', defaultColumns: ['title', 'category', '_status', 'updatedAt'], group: 'Контент' },
   versions: { drafts: true, maxPerDoc: 40 },
   access: {
     read: ({ req }) => req.user ? true : { _status: { equals: 'published' } },
@@ -17,6 +19,7 @@ export const Articles: CollectionConfig = {
     { name: 'excerpt', type: 'textarea' },
     { name: 'category', type: 'text' },
     { name: 'publishedAt', type: 'date' },
+    { name: 'editorialReviewed', label: 'Проверено редактором (разрешить индексацию)', type: 'checkbox', defaultValue: false },
     { name: 'cover', type: 'upload', relationTo: 'media' },
     { name: 'coverPath', type: 'text' },
     { name: 'body', type: 'richText' },

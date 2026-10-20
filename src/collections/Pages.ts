@@ -4,7 +4,9 @@ import { contentBlocks } from '@/blocks/content'
 export const Pages: CollectionConfig = {
   slug: 'pages',
   labels: { singular: 'Страница', plural: 'Страницы' },
-  admin: { useAsTitle: 'title', defaultColumns: ['title', 'path', '_status', 'updatedAt'], group: 'Сайт' },
+  admin: {
+    preview: ({ data }) => (process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000') + '/api/preview?path=' + encodeURIComponent((data as {path?: string }).path || '/'),
+    useAsTitle: 'title', defaultColumns: ['title', 'path', '_status', 'updatedAt'], group: 'Сайт' },
   versions: { drafts: { autosave: { interval: 350 } }, maxPerDoc: 40 },
   access: {
     read: ({ req }) => req.user ? true : { _status: { equals: 'published' } },

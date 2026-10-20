@@ -501,6 +501,7 @@ export interface Article {
   excerpt?: string | null;
   category?: string | null;
   publishedAt?: string | null;
+  editorialReviewed?: boolean | null;
   cover?: (number | null) | Media;
   coverPath?: string | null;
   body?: {
@@ -1134,6 +1135,7 @@ export interface ArticlesSelect<T extends boolean = true> {
   excerpt?: T;
   category?: T;
   publishedAt?: T;
+  editorialReviewed?: T;
   cover?: T;
   coverPath?: T;
   body?: T;
