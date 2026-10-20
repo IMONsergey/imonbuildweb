@@ -1,0 +1,16 @@
+node_modules
+.next
+.git
+.env
+.env.*
+!.env.example
+*.db
+*.db-*
+data
+uploads
+audit
+.initial-admin
+.vscode
+.DS_Store
+test-results
+playwright-report
