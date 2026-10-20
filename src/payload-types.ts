@@ -336,6 +336,44 @@ export interface Page {
             blockName?: string | null;
             blockType: 'cta';
           }
+        | {
+            heroImage?: (number | null) | Media;
+            heroImagePath?: string | null;
+            statement?: string | null;
+            teamTitle?: string | null;
+            teamIntro?: string | null;
+            team?:
+              | {
+                  role: string;
+                  name?: string | null;
+                  portrait?: (number | null) | Media;
+                  portraitPath?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            cultureTitle?: string | null;
+            cultureItems?:
+              | {
+                  text: string;
+                  id?: string | null;
+                }[]
+              | null;
+            symbolsTitle?: string | null;
+            symbols?:
+              | {
+                  image?: (number | null) | Media;
+                  imagePath?: string | null;
+                  alt?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            closingImage?: (number | null) | Media;
+            closingImagePath?: string | null;
+            closingHref?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'aboutEditorial';
+          }
       )[]
     | null;
   seo?: {
@@ -482,6 +520,44 @@ export interface Project {
             id?: string | null;
             blockName?: string | null;
             blockType: 'cta';
+          }
+        | {
+            heroImage?: (number | null) | Media;
+            heroImagePath?: string | null;
+            statement?: string | null;
+            teamTitle?: string | null;
+            teamIntro?: string | null;
+            team?:
+              | {
+                  role: string;
+                  name?: string | null;
+                  portrait?: (number | null) | Media;
+                  portraitPath?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            cultureTitle?: string | null;
+            cultureItems?:
+              | {
+                  text: string;
+                  id?: string | null;
+                }[]
+              | null;
+            symbolsTitle?: string | null;
+            symbols?:
+              | {
+                  image?: (number | null) | Media;
+                  imagePath?: string | null;
+                  alt?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            closingImage?: (number | null) | Media;
+            closingImagePath?: string | null;
+            closingHref?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'aboutEditorial';
           }
       )[]
     | null;
@@ -638,6 +714,44 @@ export interface Article {
             id?: string | null;
             blockName?: string | null;
             blockType: 'cta';
+          }
+        | {
+            heroImage?: (number | null) | Media;
+            heroImagePath?: string | null;
+            statement?: string | null;
+            teamTitle?: string | null;
+            teamIntro?: string | null;
+            team?:
+              | {
+                  role: string;
+                  name?: string | null;
+                  portrait?: (number | null) | Media;
+                  portraitPath?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            cultureTitle?: string | null;
+            cultureItems?:
+              | {
+                  text: string;
+                  id?: string | null;
+                }[]
+              | null;
+            symbolsTitle?: string | null;
+            symbols?:
+              | {
+                  image?: (number | null) | Media;
+                  imagePath?: string | null;
+                  alt?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            closingImage?: (number | null) | Media;
+            closingImagePath?: string | null;
+            closingHref?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'aboutEditorial';
           }
       )[]
     | null;
@@ -964,6 +1078,45 @@ export interface PagesSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        aboutEditorial?:
+          | T
+          | {
+              heroImage?: T;
+              heroImagePath?: T;
+              statement?: T;
+              teamTitle?: T;
+              teamIntro?: T;
+              team?:
+                | T
+                | {
+                    role?: T;
+                    name?: T;
+                    portrait?: T;
+                    portraitPath?: T;
+                    id?: T;
+                  };
+              cultureTitle?: T;
+              cultureItems?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              symbolsTitle?: T;
+              symbols?:
+                | T
+                | {
+                    image?: T;
+                    imagePath?: T;
+                    alt?: T;
+                    id?: T;
+                  };
+              closingImage?: T;
+              closingImagePath?: T;
+              closingHref?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   seo?:
     | T
@@ -1119,6 +1272,45 @@ export interface ProjectsSelect<T extends boolean = true> {
               id?: T;
               blockName?: T;
             };
+        aboutEditorial?:
+          | T
+          | {
+              heroImage?: T;
+              heroImagePath?: T;
+              statement?: T;
+              teamTitle?: T;
+              teamIntro?: T;
+              team?:
+                | T
+                | {
+                    role?: T;
+                    name?: T;
+                    portrait?: T;
+                    portraitPath?: T;
+                    id?: T;
+                  };
+              cultureTitle?: T;
+              cultureItems?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              symbolsTitle?: T;
+              symbols?:
+                | T
+                | {
+                    image?: T;
+                    imagePath?: T;
+                    alt?: T;
+                    id?: T;
+                  };
+              closingImage?: T;
+              closingImagePath?: T;
+              closingHref?: T;
+              id?: T;
+              blockName?: T;
+            };
       };
   seoDescription?: T;
   updatedAt?: T;
@@ -1264,6 +1456,45 @@ export interface ArticlesSelect<T extends boolean = true> {
               heading?: T;
               buttonText?: T;
               href?: T;
+              id?: T;
+              blockName?: T;
+            };
+        aboutEditorial?:
+          | T
+          | {
+              heroImage?: T;
+              heroImagePath?: T;
+              statement?: T;
+              teamTitle?: T;
+              teamIntro?: T;
+              team?:
+                | T
+                | {
+                    role?: T;
+                    name?: T;
+                    portrait?: T;
+                    portraitPath?: T;
+                    id?: T;
+                  };
+              cultureTitle?: T;
+              cultureItems?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              symbolsTitle?: T;
+              symbols?:
+                | T
+                | {
+                    image?: T;
+                    imagePath?: T;
+                    alt?: T;
+                    id?: T;
+                  };
+              closingImage?: T;
+              closingImagePath?: T;
+              closingHref?: T;
               id?: T;
               blockName?: T;
             };

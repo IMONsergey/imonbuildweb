@@ -123,4 +123,35 @@ export const CtaBlock: Block = {
   ],
 }
 
-export const contentBlocks = [TextBlock, MediaBlock, GalleryBlock, ServicesBlock, FaqBlock, QuoteBlock, CardGridBlock, ListingBlock, ContactBlock, CtaBlock]
+export const AboutEditorialBlock: Block = {
+  slug: 'aboutEditorial',
+  labels: { singular: 'Редакционный блок «О нас»', plural: 'Редакционные блоки «О нас»' },
+  fields: [
+    { name: 'heroImage', type: 'upload', relationTo: 'media' },
+    { name: 'heroImagePath', type: 'text', label: 'Исходное фото' },
+    { name: 'statement', type: 'textarea', label: 'Описание подхода' },
+    { name: 'teamTitle', type: 'text', defaultValue: 'Команда' },
+    { name: 'teamIntro', type: 'textarea', label: 'Вступление команды' },
+    { name: 'team', type: 'array', label: 'Дисциплины и портреты', fields: [
+      { name: 'role', type: 'text', required: true },
+      { name: 'name', type: 'text', label: 'Имя, только если согласовано' },
+      { name: 'portrait', type: 'upload', relationTo: 'media' },
+      { name: 'portraitPath', type: 'text' },
+    ] },
+    { name: 'cultureTitle', type: 'text', defaultValue: 'Culture' },
+    { name: 'cultureItems', type: 'array', fields: [
+      { name: 'text', type: 'textarea', required: true },
+    ] },
+    { name: 'symbolsTitle', type: 'text', defaultValue: 'Контекст' },
+    { name: 'symbols', type: 'array', fields: [
+      { name: 'image', type: 'upload', relationTo: 'media' },
+      { name: 'imagePath', type: 'text' },
+      { name: 'alt', type: 'text' },
+    ] },
+    { name: 'closingImage', type: 'upload', relationTo: 'media' },
+    { name: 'closingImagePath', type: 'text' },
+    { name: 'closingHref', type: 'text', defaultValue: '/contact' },
+  ],
+}
+
+export const contentBlocks = [TextBlock, MediaBlock, GalleryBlock, ServicesBlock, FaqBlock, QuoteBlock, CardGridBlock, ListingBlock, ContactBlock, CtaBlock, AboutEditorialBlock]

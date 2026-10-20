@@ -1,0 +1,91 @@
+/* About: original editorial sections, with non-fictional I’MON copy. */
+.inside-hero--about {min-height:453px;height:453px;}
+.imon-about-intro {min-height:2118px;padding:35px 16px 30px;}
+.imon-about-image {height:849px;overflow:hidden;position:relative;}
+.imon-about-image img {height:116%;width:100%;object-fit:cover;object-position:center 50%;position:absolute;top:-8%;will-change:transform;}
+.imon-about-statement {height:260px;display:grid;grid-template-columns:50% 50%;padding-top:40px;}
+.imon-about-icon {font-size:28px;line-height:1;}
+.imon-about-statement p {max-width:710px;font-size:clamp(27px,3.1vw,47px);line-height:1.12;font-weight:560;letter-spacing:-.06em;}
+.imon-about-values {display:grid;grid-template-columns:50% 50%;}
+.imon-about-kicker {font-size:15px;}
+.imon-about-values-list {display:flex;flex-direction:column;}
+.imon-about-value {display:grid;grid-template-columns:48% 52%;align-items:start;gap:12px;padding:30px 0;border-bottom:1px solid #eee;min-height:143px;}
+.imon-about-value span {font-size:15px;color:#888;}
+.imon-about-value h3 {font-size:23px;line-height:1.2;font-weight:550;letter-spacing:-.04em;}
+.imon-about-value p {font-size:15px;color:#666;line-height:1.42;max-width:380px;}
+
+.imon-about-team {min-height:1654px;padding:20px 16px 90px;}
+.imon-about-team-title {display:flex;justify-content:space-between;align-items:end;gap:20px;border-bottom:1px solid #ddd;}
+.imon-about-team-title h2 {font-size:clamp(145px,15.5vw,224px);letter-spacing:-.08em;line-height:.9;font-weight:600;}
+.imon-about-team-title span {font-size:14px;padding-bottom:20px;}
+.imon-about-team-intro {max-width:680px;margin:32px 0 0 auto;font-size:clamp(23px,2.5vw,38px);line-height:1.15;letter-spacing:-.05em;}
+.imon-about-portraits {margin-top:100px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:115px 16px;}
+.imon-about-portrait-image {aspect-ratio:340/425;overflow:hidden;background:#ddd;}
+.imon-about-portrait-image img {width:100%;height:100%;object-fit:cover;transition:transform .7s;}
+.imon-about-portrait:hover img {transform:scale(1.04)!important;}
+.imon-about-portrait-label {display:flex;justify-content:space-between;align-items:center;font-size:15px;padding:10px 0;border-bottom:1px solid #ddd;}
+.imon-about-portrait-label small {color:#aaa;font-size:13px;}
+
+.imon-about-culture {min-height:1244px;padding:35px 16px 100px;}
+.imon-about-culture-title {display:grid;grid-template-columns:50% 50%;border-bottom:1px solid #ddd;align-items:end;}
+.imon-about-culture-title>span {font-size:15px;padding-bottom:18px;}
+.imon-about-culture-title h2 {font-size:clamp(140px,15vw,225px);line-height:.88;letter-spacing:-.075em;font-weight:600;}
+.imon-about-culture-content {display:grid;grid-template-columns:50% 50%;padding-top:35px;}
+.imon-about-culture-content>span {font-size:15px;}
+.imon-about-belief {display:grid;grid-template-columns:65px 1fr;min-height:195px;gap:10px;}
+.imon-about-belief small {color:#888;font-size:14px;}
+.imon-about-belief p {font-size:clamp(20px,2.8vw,42px);line-height:1.12;letter-spacing:-.05em;max-width:700px;}
+
+.imon-about-patterns {min-height:976px;padding:24px 16px;}
+.imon-about-patterns-title {display:flex;justify-content:space-between;align-items:end;gap:20px;border-bottom:1px solid #ddd;}
+.imon-about-patterns-title h2 {font-size:clamp(110px,14vw,204px);line-height:.9;letter-spacing:-.075em;font-weight:590;}
+.imon-about-patterns-title span {font-size:14px;padding-bottom:20px;}
+.imon-about-patterns-grid {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));grid-template-rows:repeat(2,300px);margin-top:15px;}
+.imon-about-symbol {display:grid;place-items:center;border:1px solid #eee;margin:-.5px;transition:background .3s;}
+.imon-about-symbol:hover {background:#f7f7f7;}
+.imon-about-symbol img {width:100px;height:100px;object-fit:contain;max-width:45%;max-height:45%;}
+
+.imon-about-endphoto {height:789px;position:relative;overflow:hidden;background:#ddd;}
+.imon-about-endphoto img {width:100%;height:116%;object-fit:cover;position:absolute;top:-8%;left:0;will-change:transform;}
+.imon-about-endphoto-cta {position:absolute;right:20px;bottom:25px;background:rgba(255,255,255,.94);padding:15px 22px;font-size:17px;display:flex;gap:55px;align-items:center;}
+@media(max-width:1100px) {
+ .imon-about-portrait-label {font-size:13px;}
+ .imon-about-portraits {gap:60px 12px;}
+ .imon-about-values-list {margin-left:0;}
+ .imon-about-value {grid-template-columns:25% 75%;}
+ .imon-about-value h3 {font-size:22px;}
+ .imon-about-value p {grid-column:2;}
+}
+@media(max-width:809px) {
+ .inside-hero--about {min-height:400px;height:auto;}
+ .imon-about-intro {min-height:0;padding:12px 12px 70px;}
+ .imon-about-image {height:420px;}
+ .imon-about-statement {height:auto;display:block;padding:30px 0 70px;}
+ .imon-about-statement p {font-size:clamp(31px,7.8vw,55px);margin-top:28px;}
+ .imon-about-values {display:block;}
+ .imon-about-kicker {font-size:13px;}
+ .imon-about-values-list {margin-top:25px;}
+ .imon-about-value {grid-template-columns:40px 1fr;gap:10px;padding:24px 0;}
+ .imon-about-value h3 {font-size:21px;}
+ .imon-about-value p {font-size:14px;}
+ .imon-about-team {min-height:0;padding:40px 12px 100px;}
+ .imon-about-team-title h2 {font-size:clamp(70px,17vw,135px);}
+ .imon-about-team-title span {font-size:12px;}
+ .imon-about-team-intro {font-size:clamp(22px,6vw,40px);margin:35px 0 0;max-width:650px;}
+ .imon-about-portraits {margin-top:50px;grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 12px;}
+ .imon-about-portrait-label {font-size:13px;}
+ .imon-about-culture {min-height:0;padding:15px 12px 110px;}
+ .imon-about-culture-title {grid-template-columns:1fr;}
+ .imon-about-culture-title h2 {font-size:clamp(90px,21vw,155px);order:-1;}
+ .imon-about-culture-title>span {padding:14px 0;}
+ .imon-about-culture-content {grid-template-columns:1fr;gap:35px;}
+ .imon-about-belief {min-height:110px;grid-template-columns:40px 1fr;padding-bottom:20px;}
+ .imon-about-belief p {font-size:clamp(24px,6vw,38px);}
+ .imon-about-patterns {min-height:0;padding:40px 12px 70px;}
+ .imon-about-patterns-title h2 {font-size:clamp(65px,15vw,110px);}
+ .imon-about-patterns-title span {font-size:12px;}
+ .imon-about-patterns-grid {grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(4,170px);}
+ .imon-about-symbol img {width:70px;height:70px;}
+ .imon-about-endphoto {height:450px;}
+ .imon-about-endphoto-cta {font-size:15px;right:12px;bottom:15px;}
+}

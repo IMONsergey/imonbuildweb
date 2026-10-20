@@ -1,6 +1,11 @@
 import type { Metadata } from 'next'
 import '@fontsource-variable/inter'
 import './styles.css'
+import './editorial.css'
+import './case-fidelity.css'
+import './about-fidelity.css'
+import './inner-fidelity.css'
+import './article-fidelity.css'
 import type { ReactNode } from 'react'
 
 export const metadata: Metadata = {

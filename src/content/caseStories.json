@@ -1,0 +1,604 @@
+{
+  "/cases/page": {
+    "blocks": [
+      {
+        "blockType": "visual",
+        "src": "/media/ayqqbPLk7NAbBIuohcpqbypXKvE.mp4",
+        "display": "full",
+        "caption": ""
+      },
+      {
+        "blockType": "text",
+        "heading": "О проекте",
+        "body": "GAC M8 — представительский минивэн с акцентом на комфорт, технологичность, просторный салон и деловой формат использования.\n\nПроект был посвящён созданию промо-сайта, который последовательно раскрывает модель: от первого визуального контакта до изучения интерьера, технологий, комплектаций и информации о бренде. Важно было показать автомобиль не через набор отдельных характеристик, а через цельную подачу продукта, где визу",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "text",
+        "heading": "Задача",
+        "body": "Раскрыть ценностный потенциал GAC M8 через визуальные образы и детали продукта. Сайт должен был одновременно показать надёжность автомобиля, комфорт владения и привлекательность инвестиции в будущее — без перегрузки характеристиками.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "text",
+        "heading": "Автомобиль как пространство для бизнеса",
+        "body": "GAC M8 выводили на глобальный рынок как представительский минивэн для людей, которые ценят время, статус и комфорт в движении. Сайт должен был объяснить продукт без перегруженной автомобильной риторики.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/SB9E3hsxMZQkB2vXO5FfvAmAcKw.mp4",
+        "display": "full",
+        "caption": ""
+      },
+      {
+        "blockType": "gallery",
+        "items": [
+          {
+            "src": "/media/PdrU9cFzSGNlVQcM5qjITXDg5k.webp",
+            "caption": ""
+          },
+          {
+            "src": "/media/XwWQ3pZJcK7kJXEL3AEZB6wUeI.webp",
+            "caption": ""
+          },
+          {
+            "src": "/media/FsqWHMCwCLA27lfDgspQ5FWSko.webp",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "blockType": "text",
+        "heading": "Главная промо-страница",
+        "body": "Первый экран сразу задаёт масштаб модели, а дальше страница раскрывает комфорт, технологии и детали в темпе автомобильной презентации. Каждый следующий блок отвечает на один вопрос и ведёт к конфигурации.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/74yqWfGHLfWEDZC8dG8tH1debzU.webp",
+        "display": "full",
+        "caption": ""
+      },
+      {
+        "blockType": "gallery",
+        "items": [
+          {
+            "src": "/media/xVwQXZmClqNW2yaGKoux2ca4pY.webp",
+            "caption": ""
+          },
+          {
+            "src": "/media/f4VRIHIEw79kmrcqNMWZC1DGb4.webp",
+            "caption": ""
+          },
+          {
+            "src": "/media/ogSQBKfIQvUcZ8JSFZAxnYUK9Y.webp",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "blockType": "text",
+        "heading": "Архитектура, которая раскрывает продукт",
+        "body": "Структуру выстроили от эмоционального знакомства к рациональному выбору. Длинная desktop-версия сохраняет кинематографичность, а мобильная сборка превращает тот же сценарий в короткие, легко считываемые эпизоды.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "gallery",
+        "items": [
+          {
+            "src": "/media/9NkWEkhf981NhX9j6MPWbJ0GYFQ.webp",
+            "caption": ""
+          },
+          {
+            "src": "/media/04N1ILJXub2wZ5o7s7mMUIhZNs.webp",
+            "caption": ""
+          },
+          {
+            "src": "/media/IxbvOdYKYaQhieSxBZcVcRzy0.webp",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "blockType": "text",
+        "heading": "Визуальная система",
+        "body": "Палитра соединяет технологичность и сдержанную премиальность: холодные светлые поверхности дают воздуху работать, графитовые сцены усиливают драматургию, красный остаётся точечным сигналом бренда.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "cards",
+        "items": [
+          {
+            "heading": "Signal Red · #DD0010",
+            "body": ""
+          },
+          {
+            "heading": "Graphite · #0E141C",
+            "body": ""
+          },
+          {
+            "heading": "Steel Blue · #A3B2C7",
+            "body": ""
+          },
+          {
+            "heading": "Cool Mist · #ECF0F3",
+            "body": ""
+          },
+          {
+            "heading": "Paper · #F7F7F8",
+            "body": ""
+          }
+        ]
+      },
+      {
+        "blockType": "text",
+        "heading": "Интеллектуальные технологии",
+        "body": "Сложные функции автомобиля объясняются через короткие визуальные демонстрации. Анимация отвечает за ощущение точности, а статичные экраны дают спокойно рассмотреть интерфейс и характеристики.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/99wlXWq0nkWSsCdsQt2rZTHGPNI.mp4",
+        "display": "full",
+        "caption": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/Ie5ne4R2i7eha066n8z0MYsEG4.webp",
+        "display": "wide",
+        "caption": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/tpOlVTlGUR1x2hkaSB9iyotjsag.webp",
+        "display": "wide",
+        "caption": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/AvWQqTMe49AF9REWqYodAzMjbM.webp",
+        "display": "full",
+        "caption": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/FTgNp8TuQs9cg0TURujZKyfh68.webp",
+        "display": "portrait",
+        "caption": ""
+      },
+      {
+        "blockType": "text",
+        "heading": "Панель управления",
+        "body": "Вместо каталога функций мы показали среду водителя: дисплеи, органы управления и цифровые сценарии собраны в единый рассказ о контроле и комфорте.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/TjQ0airCfTznEy16G5ndwod21Y.mp4",
+        "display": "full",
+        "caption": ""
+      },
+      {
+        "blockType": "gallery",
+        "items": [
+          {
+            "src": "/media/XeqAYBSuIpbqSUAtYmKZYG518jU.webp",
+            "caption": ""
+          },
+          {
+            "src": "/media/mmmatNgIThwjC7WxlXQ66AuiHNQ.webp",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "blockType": "text",
+        "heading": "Конфигурация моделей",
+        "body": "Конфигуратор помогает сравнить версии без ощущения таблицы характеристик. Пользователь видит автомобиль, ключевые отличия и доступные варианты в одном визуальном поле.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/kh7AqQ1llqoF5iSmsSySFEeoaw.mp4",
+        "display": "full",
+        "caption": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/bcNdVpO2dR5w6r9oR0z4Y6f8.webp",
+        "display": "wide",
+        "caption": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/PH0byannMb0sX9VgPF0iQzOUgs.webp",
+        "display": "wide",
+        "caption": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/GwRTAL5b10FgR9jLnSy1JSMmxVE.webp",
+        "display": "full",
+        "caption": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/AAExfqpI7mtskdvEWwn6SBDaU.webp",
+        "display": "portrait",
+        "caption": ""
+      },
+      {
+        "blockType": "text",
+        "heading": "Экстерьер и характер",
+        "body": "В тёмной сцене автомобиль становится главным героем. Пластика кузова, свет и детали работают как единая последовательность, а интерфейс отступает на второй план.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/oiHJ8rwmBXYoR1QFwnUQ1Y9VOzY.mp4",
+        "display": "full",
+        "caption": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/Nee9zLwGKPR9xVR0RDKNeQdHw6k.webp",
+        "display": "full",
+        "caption": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/7LZPPHbqoAzPLKr3JhRTqEuOQI.webp",
+        "display": "full",
+        "caption": ""
+      },
+      {
+        "blockType": "gallery",
+        "items": [
+          {
+            "src": "/media/GpMAbuVN1D8to4GVsyI9b37cQs.webp",
+            "caption": ""
+          },
+          {
+            "src": "/media/BD6AFg5m118OKnXKcjQ3qjiTsKU.webp",
+            "caption": ""
+          },
+          {
+            "src": "/media/RsO24vuber0TgpyTWToU88iPy8I.webp",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "blockType": "text",
+        "heading": "Интерьер как отдельный мир",
+        "body": "После динамичного экстерьера темп замедляется. Интерьер раскрывается через свет, материалы, пространство второго ряда и детали, которые поддерживают обещание представительского комфорта.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "gallery",
+        "items": [
+          {
+            "src": "/media/npcQ4Z8VVvtw5yHKxxZFJTE6w.mp4",
+            "caption": ""
+          },
+          {
+            "src": "/media/u7qG5WWLT8HGvYbjMpD05zOAlI.mp4",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/PL7CHk46WDwSuttrjs2CyxuMI.webp",
+        "display": "wide",
+        "caption": ""
+      },
+      {
+        "blockType": "text",
+        "heading": "Страница компании",
+        "body": "Финальная продуктовая глава переводит внимание от одной модели к масштабу GAC Group. Так промо-сайт заканчивается не тупиком, а продолжением знакомства с брендом.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/bLDYriJYeGlZpw6EU1Mj9IA5MI.mp4",
+        "display": "full",
+        "caption": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/JGtXlCy5SBffGyv04bzQBDWfwYg.webp",
+        "display": "full",
+        "caption": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/EIEwXIviBu6bbOmgdH0AGSkKSB0.webp",
+        "display": "full",
+        "caption": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/gp9q89jcYmVVPvvi5Jr4IfWdItU.webp",
+        "display": "portrait",
+        "caption": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/EwBpoEOF6jrKfcwaCeQuMjR4NXA.webp",
+        "display": "portrait",
+        "caption": ""
+      },
+      {
+        "blockType": "text",
+        "heading": "Цельная цифровая презентация",
+        "body": "Кейс объединил эмоциональную подачу автомобиля, понятную продуктовую структуру и адаптивный интерфейс. На каждом устройстве история сохраняет последовательность и премиальный темп.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/YM3v5X3HdgxF8EnejrLPdjRZ4fM.webp",
+        "display": "full",
+        "caption": ""
+      },
+      {
+        "blockType": "cards",
+        "items": [
+          {
+            "heading": "01",
+            "body": "Продукт раскрывается последовательно, а не через набор несвязанных экранов."
+          },
+          {
+            "heading": "02",
+            "body": "Видео и статичные материалы работают вместе и сохраняют исходные пропорции."
+          },
+          {
+            "heading": "03",
+            "body": "Desktop, tablet и mobile продолжают одну историю без потери содержания."
+          }
+        ]
+      }
+    ],
+    "length": 45,
+    "mediaCount": 40
+  },
+  "/cases/askona-life-group": {
+    "blocks": [
+      {
+        "blockType": "visual",
+        "src": "/media/do1iW5RWfxAilRvHDrvkg01gs.webp",
+        "display": "full",
+        "caption": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "https://kinescope.io/embed/5Bm6nsT2uNjzzomeXCat7Z?autoplay=1&muted=1&loop=1&playsinline=1",
+        "display": "full",
+        "caption": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/FFN0jZcyJMA4Z1LOoQu3bTkaXuM.jpg",
+        "display": "wide",
+        "caption": ""
+      },
+      {
+        "blockType": "text",
+        "heading": "Задача",
+        "body": "Объединить разные бизнесы группы в одну цифровую историю: показать масштаб холдинга, сохранить человеческий тон и дать короткий маршрут к каждому направлению.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/do1iW5RWfxAilRvHDrvkg01gs.webp",
+        "display": "wide",
+        "caption": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/XVtclO78Zy9cgdbTgJCOm4EBCU.webp",
+        "display": "portrait",
+        "caption": ""
+      },
+      {
+        "blockType": "text",
+        "heading": "Архитектура",
+        "body": "Три сценария раскрывают структуру группы: бизнесы, документы и ценности. Та же логика сохраняется на большом экране и в телефоне.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "gallery",
+        "items": [
+          {
+            "src": "/media/4VayDA2UHtJnMtZtkreqB9T1OE.webp",
+            "caption": ""
+          },
+          {
+            "src": "/media/lKjJ7ViSsdLZnX35iqolj9TqxI.webp",
+            "caption": ""
+          },
+          {
+            "src": "/media/ep5Z8EsACyOzjMgBILSiC9qORw.webp",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "blockType": "gallery",
+        "items": [
+          {
+            "src": "/media/25SD39jGkfc6OzERbF27yIIT0Q.webp",
+            "caption": ""
+          },
+          {
+            "src": "/media/OMLr87BqwLYgHEbVDM6Uaj5UYD4.webp",
+            "caption": ""
+          },
+          {
+            "src": "/media/58Q27Nfl4T70fqJiHjCsgUayamU.webp",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "blockType": "text",
+        "heading": "Визуальная система",
+        "body": "Холодный голубой, бирюзовый и глубокий ночной фон связывают разные направления холдинга в один технологичный, но спокойный язык.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "gallery",
+        "items": [
+          {
+            "src": "/media/Z7aiho3UNdUck0HWOUx5EGDgQ8.svg",
+            "caption": ""
+          },
+          {
+            "src": "/media/NSumqwWZy0GbcAAIwaQPSIs28I.svg",
+            "caption": ""
+          },
+          {
+            "src": "/media/JN58cIHHAuSlFAeDRu1RkirwC4k.webp",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/AEn6VDtN9nEMbnp3ExGAiKhZgOY.webp",
+        "display": "full",
+        "caption": ""
+      },
+      {
+        "blockType": "text",
+        "heading": "UX/UI",
+        "body": "Один маршрут ведёт от масштаба холдинга к конкретной компании. Desktop даёт обзор, mobile сохраняет тот же сценарий без потери содержания.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/gJtgnybSaq07it2DYtMSVZVhqI.webp",
+        "display": "wide",
+        "caption": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/oEoy2G1Rwrai7L4F0X5ErsbHjo.webp",
+        "display": "portrait",
+        "caption": ""
+      },
+      {
+        "blockType": "text",
+        "heading": "История",
+        "body": "Десятилетия роста собраны в одну скролл-механику: крупные даты читаются мгновенно, детали остаются доступными на любом экране.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/eoFAWJMd4l5EgteSz5TVb4QTaQ.webp",
+        "display": "wide",
+        "caption": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/WJ03F8jDjA8VMtymeGc4BU3ADo.webp",
+        "display": "portrait",
+        "caption": ""
+      },
+      {
+        "blockType": "text",
+        "heading": "Экосистема",
+        "body": "Образование, Food Tech, корпоративные сервисы и Доброград сохраняют собственный характер, оставаясь частями одной системы.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "gallery",
+        "items": [
+          {
+            "src": "/media/uU7n6EDDE6a7K76o3tsYDYTBd6k.webp",
+            "caption": ""
+          },
+          {
+            "src": "/media/kZJim8VBhiqWJllLz73XnOGSQ.webp",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "blockType": "gallery",
+        "items": [
+          {
+            "src": "/media/Ro8l0O5gB8ePYrjHaLZ1YuXa3M.webp",
+            "caption": ""
+          },
+          {
+            "src": "/media/Twy0fSYV9WQgocxttalHzmmUyQ.webp",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "blockType": "text",
+        "heading": "Носители",
+        "body": "Айдентика продолжает интерфейс за пределами сайта и одинаково уверенно работает на устройстве и в деловой коммуникации.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "gallery",
+        "items": [
+          {
+            "src": "/media/s7qFkjtaSZTcPqUuPjFmj6TfBYg.webp",
+            "caption": ""
+          },
+          {
+            "src": "/media/6klqC5L2UqPj0r5zIwjiy7Du1y8.webp",
+            "caption": ""
+          }
+        ]
+      },
+      {
+        "blockType": "text",
+        "heading": "Результат",
+        "body": "Портал стал не каталогом компаний, а последовательным цифровым маршрутом: масштаб группы понятен, нужное направление находится быстро, ценности считываются без пояснений.",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "text",
+        "heading": "Askona life group",
+        "body": "",
+        "layout": "split",
+        "eyebrow": ""
+      },
+      {
+        "blockType": "visual",
+        "src": "/media/t3Gq2rCvl3NJ3dXRvWcUBKmdg.webp",
+        "display": "portrait",
+        "caption": ""
+      }
+    ],
+    "length": 26,
+    "mediaCount": 26
+  }
+}
