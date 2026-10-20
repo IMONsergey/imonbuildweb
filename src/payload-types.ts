@@ -203,6 +203,15 @@ export interface Media {
  */
 export interface Page {
   id: number;
+  studio?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   /**
    * Относительный путь, например /about или /cases/my-case
    */
@@ -222,6 +231,8 @@ export interface Page {
             eyebrow?: string | null;
             heading?: string | null;
             body?: string | null;
+            image?: (number | null) | Media;
+            imagePath?: string | null;
             layout?: ('split' | 'full' | 'narrow' | 'dark') | null;
             id?: string | null;
             blockName?: string | null;
@@ -285,6 +296,7 @@ export interface Page {
             blockType: 'faq';
           }
         | {
+            heading?: string | null;
             eyebrow?: string | null;
             quote: string;
             attribution?: string | null;
@@ -340,6 +352,13 @@ export interface Page {
             heroImage?: (number | null) | Media;
             heroImagePath?: string | null;
             statement?: string | null;
+            values?:
+              | {
+                  heading?: string | null;
+                  body?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
             teamTitle?: string | null;
             teamIntro?: string | null;
             team?:
@@ -391,6 +410,15 @@ export interface Page {
  */
 export interface Project {
   id: number;
+  studio?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   slug: string;
   sourcePath: string;
   title: string;
@@ -407,6 +435,8 @@ export interface Project {
             eyebrow?: string | null;
             heading?: string | null;
             body?: string | null;
+            image?: (number | null) | Media;
+            imagePath?: string | null;
             layout?: ('split' | 'full' | 'narrow' | 'dark') | null;
             id?: string | null;
             blockName?: string | null;
@@ -470,6 +500,7 @@ export interface Project {
             blockType: 'faq';
           }
         | {
+            heading?: string | null;
             eyebrow?: string | null;
             quote: string;
             attribution?: string | null;
@@ -525,6 +556,13 @@ export interface Project {
             heroImage?: (number | null) | Media;
             heroImagePath?: string | null;
             statement?: string | null;
+            values?:
+              | {
+                  heading?: string | null;
+                  body?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
             teamTitle?: string | null;
             teamIntro?: string | null;
             team?:
@@ -572,6 +610,15 @@ export interface Project {
  */
 export interface Article {
   id: number;
+  studio?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   slug: string;
   title: string;
   excerpt?: string | null;
@@ -601,6 +648,8 @@ export interface Article {
             eyebrow?: string | null;
             heading?: string | null;
             body?: string | null;
+            image?: (number | null) | Media;
+            imagePath?: string | null;
             layout?: ('split' | 'full' | 'narrow' | 'dark') | null;
             id?: string | null;
             blockName?: string | null;
@@ -664,6 +713,7 @@ export interface Article {
             blockType: 'faq';
           }
         | {
+            heading?: string | null;
             eyebrow?: string | null;
             quote: string;
             attribution?: string | null;
@@ -719,6 +769,13 @@ export interface Article {
             heroImage?: (number | null) | Media;
             heroImagePath?: string | null;
             statement?: string | null;
+            values?:
+              | {
+                  heading?: string | null;
+                  body?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
             teamTitle?: string | null;
             teamIntro?: string | null;
             team?:
@@ -940,6 +997,7 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "pages_select".
  */
 export interface PagesSelect<T extends boolean = true> {
+  studio?: T;
   path?: T;
   title?: T;
   kind?: T;
@@ -959,6 +1017,8 @@ export interface PagesSelect<T extends boolean = true> {
               eyebrow?: T;
               heading?: T;
               body?: T;
+              image?: T;
+              imagePath?: T;
               layout?: T;
               id?: T;
               blockName?: T;
@@ -1024,6 +1084,7 @@ export interface PagesSelect<T extends boolean = true> {
         quote?:
           | T
           | {
+              heading?: T;
               eyebrow?: T;
               quote?: T;
               attribution?: T;
@@ -1084,6 +1145,13 @@ export interface PagesSelect<T extends boolean = true> {
               heroImage?: T;
               heroImagePath?: T;
               statement?: T;
+              values?:
+                | T
+                | {
+                    heading?: T;
+                    body?: T;
+                    id?: T;
+                  };
               teamTitle?: T;
               teamIntro?: T;
               team?:
@@ -1134,6 +1202,7 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "projects_select".
  */
 export interface ProjectsSelect<T extends boolean = true> {
+  studio?: T;
   slug?: T;
   sourcePath?: T;
   title?: T;
@@ -1153,6 +1222,8 @@ export interface ProjectsSelect<T extends boolean = true> {
               eyebrow?: T;
               heading?: T;
               body?: T;
+              image?: T;
+              imagePath?: T;
               layout?: T;
               id?: T;
               blockName?: T;
@@ -1218,6 +1289,7 @@ export interface ProjectsSelect<T extends boolean = true> {
         quote?:
           | T
           | {
+              heading?: T;
               eyebrow?: T;
               quote?: T;
               attribution?: T;
@@ -1278,6 +1350,13 @@ export interface ProjectsSelect<T extends boolean = true> {
               heroImage?: T;
               heroImagePath?: T;
               statement?: T;
+              values?:
+                | T
+                | {
+                    heading?: T;
+                    body?: T;
+                    id?: T;
+                  };
               teamTitle?: T;
               teamIntro?: T;
               team?:
@@ -1322,6 +1401,7 @@ export interface ProjectsSelect<T extends boolean = true> {
  * via the `definition` "articles_select".
  */
 export interface ArticlesSelect<T extends boolean = true> {
+  studio?: T;
   slug?: T;
   title?: T;
   excerpt?: T;
@@ -1340,6 +1420,8 @@ export interface ArticlesSelect<T extends boolean = true> {
               eyebrow?: T;
               heading?: T;
               body?: T;
+              image?: T;
+              imagePath?: T;
               layout?: T;
               id?: T;
               blockName?: T;
@@ -1405,6 +1487,7 @@ export interface ArticlesSelect<T extends boolean = true> {
         quote?:
           | T
           | {
+              heading?: T;
               eyebrow?: T;
               quote?: T;
               attribution?: T;
@@ -1465,6 +1548,13 @@ export interface ArticlesSelect<T extends boolean = true> {
               heroImage?: T;
               heroImagePath?: T;
               statement?: T;
+              values?:
+                | T
+                | {
+                    heading?: T;
+                    body?: T;
+                    id?: T;
+                  };
               teamTitle?: T;
               teamIntro?: T;
               team?:

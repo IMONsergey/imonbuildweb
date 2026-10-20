@@ -9,10 +9,10 @@
 .imon-about-values {display:grid;grid-template-columns:50% 50%;}
 .imon-about-kicker {font-size:15px;}
 .imon-about-values-list {display:flex;flex-direction:column;}
-.imon-about-value {display:grid;grid-template-columns:48% 52%;align-items:start;gap:12px;padding:30px 0;border-bottom:1px solid #eee;min-height:143px;}
+.imon-about-value {display:grid;grid-template-columns:40px minmax(0,1fr);align-items:start;gap:12px;padding:30px 0;border-bottom:1px solid #eee;min-height:143px;}
 .imon-about-value span {font-size:15px;color:#888;}
 .imon-about-value h3 {font-size:23px;line-height:1.2;font-weight:550;letter-spacing:-.04em;}
-.imon-about-value p {font-size:15px;color:#666;line-height:1.42;max-width:380px;}
+.imon-about-value p {grid-column:2;font-size:15px;color:#666;line-height:1.42;max-width:380px;}
 
 .imon-about-team {min-height:1654px;padding:20px 16px 90px;}
 .imon-about-team-title {display:flex;justify-content:space-between;align-items:end;gap:20px;border-bottom:1px solid #ddd;}
@@ -52,9 +52,9 @@
  .imon-about-portrait-label {font-size:13px;}
  .imon-about-portraits {gap:60px 12px;}
  .imon-about-values-list {margin-left:0;}
- .imon-about-value {grid-template-columns:25% 75%;}
+ .imon-about-value {grid-template-columns:40px minmax(0,1fr);}
  .imon-about-value h3 {font-size:22px;}
- .imon-about-value p {grid-column:2;}
+ .imon-about-value p {grid-column:2;grid-column:2;}
 }
 @media(max-width:809px) {
  .inside-hero--about {min-height:400px;height:auto;}
@@ -67,7 +67,7 @@
  .imon-about-values-list {margin-top:25px;}
  .imon-about-value {grid-template-columns:40px 1fr;gap:10px;padding:24px 0;}
  .imon-about-value h3 {font-size:21px;}
- .imon-about-value p {font-size:14px;}
+ .imon-about-value p {grid-column:2;font-size:14px;}
  .imon-about-team {min-height:0;padding:40px 12px 100px;}
  .imon-about-team-title h2 {font-size:clamp(70px,17vw,135px);}
  .imon-about-team-title span {font-size:12px;}

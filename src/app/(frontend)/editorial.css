@@ -232,3 +232,5 @@
   .footer-menu>nav {grid-column:auto;grid-row:auto;}
   .footer-social {grid-column:2;grid-row:1;align-self:start;}
 }
+
+.imon-principle-decor>img{width:min(100%,220px);height:220px;object-fit:contain}

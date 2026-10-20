@@ -7,6 +7,8 @@ export const TextBlock: Block = {
     { name: 'eyebrow', label: 'Надзаголовок', type: 'text' },
     { name: 'heading', label: 'Заголовок', type: 'text' },
     { name: 'body', label: 'Текст', type: 'textarea' },
+    { name: 'image', label: 'Иллюстрация раздела', type: 'upload', relationTo: 'media' },
+    { name: 'imagePath', label: 'Исходная иллюстрация', type: 'text' },
     { name: 'layout', label: 'Композиция', type: 'select', defaultValue: 'split', options: ['split', 'full', 'narrow', 'dark'].map(value => ({ label: value, value })) },
   ],
 }
@@ -68,6 +70,7 @@ export const QuoteBlock: Block = {
   slug: 'quote',
   labels: { singular: 'Цитата', plural: 'Цитаты' },
   fields: [
+    { name: 'heading', label: 'Заголовок раздела', type: 'text', defaultValue: 'Принцип' },
     { name: 'eyebrow', type: 'text' },
     { name: 'quote', type: 'textarea', required: true },
     { name: 'attribution', type: 'text' },
@@ -130,6 +133,10 @@ export const AboutEditorialBlock: Block = {
     { name: 'heroImage', type: 'upload', relationTo: 'media' },
     { name: 'heroImagePath', type: 'text', label: 'Исходное фото' },
     { name: 'statement', type: 'textarea', label: 'Описание подхода' },
+    { name: 'values', label: 'Принципы работы', type: 'array', fields: [
+      { name: 'heading', label: 'Заголовок', type: 'text' },
+      { name: 'body', label: 'Описание', type: 'textarea' },
+    ] },
     { name: 'teamTitle', type: 'text', defaultValue: 'Команда' },
     { name: 'teamIntro', type: 'textarea', label: 'Вступление команды' },
     { name: 'team', type: 'array', label: 'Дисциплины и портреты', fields: [

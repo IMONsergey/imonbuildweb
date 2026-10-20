@@ -1,6 +1,7 @@
 import type { OriginalPage } from './site'
 
 export type DisplayBlock = {
+  id?: string; blockName?: string
   blockType: string
   eyebrow?: string
   heading?: string

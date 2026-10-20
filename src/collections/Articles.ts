@@ -9,11 +9,13 @@ export const Articles: CollectionConfig = {
     useAsTitle: 'title', defaultColumns: ['title', 'category', '_status', 'updatedAt'], group: 'Контент' },
   versions: { drafts: true, maxPerDoc: 40 },
   access: {
+    readVersions: ({ req }) => !!req.user,
     read: ({ req }) => req.user ? true : { _status: { equals: 'published' } },
     create: ({ req }) => !!req.user, update: ({ req }) => !!req.user,
     delete: ({ req }) => req.user?.role === 'admin',
   },
   fields: [
+    { name: 'studio', label: 'Настройки визуального редактора', type: 'json', admin: { hidden: true } },
     { name: 'slug', type: 'text', unique: true, required: true },
     { name: 'title', type: 'text', required: true },
     { name: 'excerpt', type: 'textarea' },

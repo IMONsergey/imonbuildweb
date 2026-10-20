@@ -15,11 +15,22 @@ import { Settings } from './globals/Settings'
 import { Navigation } from './globals/Navigation'
 
 const dirname = path.dirname(fileURLToPath(import.meta.url))
+const canonicalOrigin = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+const allowedOrigins = [canonicalOrigin]
+try {
+  const local = new URL(canonicalOrigin)
+  if (local.protocol === 'http:' && ['localhost', '127.0.0.1'].includes(local.hostname)) {
+    local.hostname = local.hostname === 'localhost' ? '127.0.0.1' : 'localhost'
+    allowedOrigins.push(local.origin)
+  }
+} catch { throw new Error('NEXT_PUBLIC_SERVER_URL must be an absolute origin') }
+
 
 export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL || undefined,
   admin: {
     user: Users.slug,
+    components: { beforeNavLinks: ['/components/admin/StudioLink#StudioLink'] },
     meta: { titleSuffix: ' — I’MON CMS' },
     importMap: { baseDir: path.resolve(dirname) },
   },
@@ -29,10 +40,11 @@ export default buildConfig({
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
   db: sqliteAdapter({
+    push: false,
     client: { url: process.env.DATABASE_URL || 'file:./imonbuildweb.db' },
     wal: true,
   }),
   sharp,
-  cors: [process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'],
-  csrf: [process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'],
+  cors: allowedOrigins,
+  csrf: allowedOrigins,
 })

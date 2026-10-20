@@ -9,12 +9,14 @@ export const Pages: CollectionConfig = {
     useAsTitle: 'title', defaultColumns: ['title', 'path', '_status', 'updatedAt'], group: 'Сайт' },
   versions: { drafts: { autosave: { interval: 350 } }, maxPerDoc: 40 },
   access: {
+    readVersions: ({ req }) => !!req.user,
     read: ({ req }) => req.user ? true : { _status: { equals: 'published' } },
     create: ({ req }) => !!req.user,
     update: ({ req }) => !!req.user,
     delete: ({ req }) => req.user?.role === 'admin',
   },
   fields: [
+    { name: 'studio', label: 'Настройки визуального редактора', type: 'json', admin: { hidden: true } },
     { name: 'path', label: 'Адрес страницы', type: 'text', unique: true, required: true, admin: { description: 'Относительный путь, например /about или /cases/my-case' } },
     { name: 'title', label: 'Название', type: 'text', required: true },
     { name: 'kind', label: 'Тип страницы', type: 'select', defaultValue: 'standard', options: ['home', 'about', 'work', 'news', 'contact', 'case', 'article', 'legal', 'standard'].map(value => ({ label: value, value })) },

@@ -1,5 +1,7 @@
 import * as migration_20261020_071331_initial from './20261020_071331_initial';
 import * as migration_20261020_094428 from './20261020_094428';
+import * as migration_20261020_103516_studio_document_layout from './20261020_103516_studio_document_layout';
+import * as migration_20261020_110139_about_editorial_values from './20261020_110139_about_editorial_values';
 
 export const migrations = [
   {
@@ -10,6 +12,16 @@ export const migrations = [
   {
     up: migration_20261020_094428.up,
     down: migration_20261020_094428.down,
-    name: '20261020_094428'
+    name: '20261020_094428',
+  },
+  {
+    up: migration_20261020_103516_studio_document_layout.up,
+    down: migration_20261020_103516_studio_document_layout.down,
+    name: '20261020_103516_studio_document_layout',
+  },
+  {
+    up: migration_20261020_110139_about_editorial_values.up,
+    down: migration_20261020_110139_about_editorial_values.down,
+    name: '20261020_110139_about_editorial_values'
   },
 ];

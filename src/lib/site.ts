@@ -64,7 +64,7 @@ async function previewAuthorized(path: string, urlToken?: string): Promise<boole
 
 export async function siteSettings() {
   const payload = await cms()
-  if (!payload) return { settings: fallbackSettings, links: fallbackNavigation }
+  if (!payload) return { settings: fallbackSettings, links: fallbackNavigation, cta: { text: 'Связаться', href: '/contact' } }
   const [settings, nav] = await Promise.all([
     payload.findGlobal({ slug: 'site-settings' }),
     payload.findGlobal({ slug: 'navigation' }),
@@ -78,6 +78,7 @@ export async function siteSettings() {
   return {
     settings: { ...fallbackSettings, ...settings },
     links,
+    cta: { text: nav.ctaText || 'Связаться', href: nav.ctaHref || '/contact' },
   }
 }
 
@@ -102,7 +103,7 @@ export async function siteProjects(): Promise<ContentProject[]> {
     collection: 'projects', limit: 100, depth: 2, draft: preview, sort: 'order',
     where: preview ? {} : { _status: { equals: 'published' } },
   })
-  return result.docs.filter(project => project.sourcePath.startsWith('/work/'))
+  return result.docs
 }
 
 export async function siteProject(path: string, urlToken?: string): Promise<ContentProject | undefined> {
@@ -149,7 +150,9 @@ export function field<T = string>(entity: ContentPage | ContentProject | Content
 
 export function mediaPath(upload: unknown, initial?: string): string {
   if (upload && typeof upload === 'object' && 'url' in upload && typeof upload.url === 'string') {
-    return upload.url.startsWith('/') ? upload.url : ''
+    if (upload.url.startsWith('/')) return upload.url
+    if ('filename' in upload && typeof upload.filename === 'string' && !/[\\/]/.test(upload.filename)) return '/api/media/file/' + encodeURIComponent(upload.filename)
+    return ''
   }
   return initial && initial.startsWith('/') ? initial : ''
 }

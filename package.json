@@ -22,7 +22,11 @@
     "localize": "tsx scripts/localize-initial-pages.ts",
     "import:media": "tsx scripts/import-media.ts",
     "qa:local": "tsx scripts/qa-local.ts",
-    "qa:media": "tsx scripts/qa-media.ts"
+    "qa:media": "tsx scripts/qa-media.ts",
+    "test:studio": "node --import tsx --test tests/studio/model.test.ts",
+    "qa:studio": "node scripts/qa-studio-workflow.mjs",
+    "qa:routes": "node scripts/audit-routes.mjs",
+    "studio:prepare": "tsx scripts/prepare-studio-content.ts"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",

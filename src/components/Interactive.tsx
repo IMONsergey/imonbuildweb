@@ -35,12 +35,23 @@ export function SiteHeader({ overlay = false, links, ctaText = 'Связатьс
   const btn = useRef<HTMLButtonElement>(null)
   useEffect(() => {
     if (!open) return
+    const menu = document.getElementById('mobile-navigation')
+    const background = [document.getElementById('main-content'), document.querySelector<HTMLElement>('.site-footer')].filter((el): el is HTMLElement => !!el)
+    const previousInert = background.map(el => el.inert)
+    background.forEach(el => { el.inert = true })
+    const focusTimer = window.setTimeout(() => menu?.querySelector<HTMLElement>('a')?.focus(), 0)
     const escape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') { setOpen(false); btn.current?.focus() }
+      if (event.key === 'Escape') { event.preventDefault();setOpen(false); btn.current?.focus() }
+      if (event.key === 'Tab') {
+        const links = Array.from(menu?.querySelectorAll<HTMLElement>('a,button') || [])
+        const first = btn.current, last = links.at(-1)
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault();last?.focus() }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault();first?.focus() }
+      }
     }
     document.addEventListener('keydown', escape)
     document.body.classList.add('nav-open')
-    return () => { document.removeEventListener('keydown', escape); document.body.classList.remove('nav-open') }
+    return () => { window.clearTimeout(focusTimer);background.forEach((el,index) => { el.inert = previousInert[index] });document.removeEventListener('keydown', escape); document.body.classList.remove('nav-open') }
   }, [open])
   return <>
     <header className={['site-header', overlay ? 'site-header--overlay' : '', scrolled ? 'site-header--scrolled' : '', open ? 'site-header--open' : ''].filter(Boolean).join(' ')}>

@@ -1,3 +1,5 @@
+import { nodeProps, fieldProps } from '@/studio/model'
+import { Blocks } from './Blocks'
 import Link from 'next/link'
 import { CaseMedia } from './CaseMedia'
 import type { DisplayBlock } from '@/lib/defaultBlocks'
@@ -10,33 +12,33 @@ const src=(r:Row|undefined)=>{
   return mediaPath(r.media,text(r,'src'))||text(r,'src')
 }
 
-export async function CaseBlocks({ blocks }: { blocks: DisplayBlock[] }) {
+export async function CaseBlocks({ blocks, currentPath = '' }: { blocks: DisplayBlock[]; currentPath?: string }) {
   const nodes = []
   for (const [index, block] of blocks.entries()){
     const row=block as unknown as Row
-    if(block.blockType==='text')nodes.push(<section key={index} className="case-story-copy" data-animate="reveal">
-      {block.heading && <h2>{block.heading}</h2>}
-      {block.body && <p>{block.body}</p>}
+    if(block.blockType==='text')nodes.push(<section key={index} {...nodeProps(block,index,'sections')} className="case-story-copy" data-animate="reveal">
+      {block.heading && <h2 {...fieldProps(`sections.${index}.heading`)}>{block.heading}</h2>}
+      {block.body && <p {...fieldProps(`sections.${index}.body`)}>{block.body}</p>}
     </section>)
     else if(block.blockType==='visual') {
       const path=src(row)
-      nodes.push(<section key={index} className={'case-story-visual case-story-visual--'+(block.display||'full')}>
+      nodes.push(<section key={index} {...nodeProps(block,index,'sections')} className={'case-story-visual case-story-visual--'+(block.display||'full')}>
         <CaseMedia src={path} alt={block.caption || 'Визуальный материал проекта'} />
       </section>)
     } else if(block.blockType==='gallery') {
       const items=(Array.isArray(block.items)?block.items:[]) as Row[]
-      nodes.push(<section key={index} className="case-story-gallery" data-count={items.length}>
+      nodes.push(<section key={index} {...nodeProps(block,index,'sections')} className="case-story-gallery" data-count={items.length}>
         {items.map((item,i)=><CaseMedia key={i} src={src(item)} alt={text(item,'caption')||'Деталь проекта '+(i+1)} />)}
       </section>)
     } else if (block.blockType==='cards') {
-      nodes.push(<section key={index} className={'case-story-cards '+((block.items||[]).length>3?'case-story-cards--palette':'')}>
+      nodes.push(<section key={index} {...nodeProps(block,index,'sections')} className={'case-story-cards '+((block.items||[]).length>3?'case-story-cards--palette':'')}>
         {(block.items||[]).map((it,i)=><div key={i} className="case-story-card">
           <span>{text(it,'heading')||String(i+1).padStart(2,'0')}</span>
           <p>{text(it,'body')}</p></div>)}
       </section>)
     } else if(block.blockType==='listing') {
-      const projects=(await siteProjects()).slice(1,3)
-      nodes.push(<section className="case-related" key={index}>
+      const projects=(await siteProjects()).filter(project => field(project,'sourcePath',field(project,'path','')) !== currentPath).slice(0,block.limit ?? 2)
+      nodes.push(<section className="case-related" key={index} {...nodeProps(block,index,'sections')}>
         <div className="case-related-title"><h2>{block.heading||'Другие проекты'}</h2><span>(Смотреть дальше)</span></div>
         <div className="case-related-items">{projects.map(p=>{
           const href=field(p,'sourcePath',field(p,'path','/work'))
@@ -46,7 +48,7 @@ export async function CaseBlocks({ blocks }: { blocks: DisplayBlock[] }) {
           </Link>
         })}</div>
       </section>)
-    }
+    } else nodes.push(<Blocks key={block.id || index} blocks={[block]} base="sections" offset={index}/>)
   }
   return <div className="case-story-content">{nodes}</div>
 }
