@@ -98,15 +98,15 @@
  .case-embed-play {transition:none;}
 }
 
-/* Mobile-frame compositions retain the source's actual column widths. */
-.case-story--gac .case-story-visual--portrait { width:200px;max-width:45%;margin-left:auto;margin-right:auto; }
-.case-story--askona .case-story-visual--portrait { width:29%;max-width:460px;margin-left:auto;margin-right:16px; }
-.case-story--askona .case-story-visual--wide + .case-story-visual--portrait { margin-top:-465px;position:relative;z-index:2; }
-.case-story--askona .case-story-visual:has(img[src*="oEoy2G1Rw"]) {width:26%;margin-left:16px;margin-right:auto;margin-top:-620px;}
-.case-story--askona .case-story-visual:has(img[src*="t3Gq2rCvl"]) {width:32%;margin-left:auto;margin-right:16px;margin-top:-60px;}
-@media(max-width:809px) {
-  .case-story--askona .case-story-visual--portrait {width:45%;margin-right:12px;}
-  .case-story--askona .case-story-visual--wide + .case-story-visual--portrait {margin-top:-150px;}
-  .case-story--askona .case-story-visual:has(img[src*="oEoy2G1Rw"]) {width:42%;margin-left:12px;margin-top:-260px;}
-  .case-story--askona .case-story-visual:has(img[src*="t3Gq2rCvl"]) {width:45%;margin-right:12px;margin-top:-15px;}
+/* Named media compositions. Content data selects the treatment; no filename- or position-based selectors. */
+.case-story-visual--overlapRight{width:29%;max-width:460px;margin-left:auto;margin-right:16px;margin-top:-465px;position:relative;z-index:2}
+.case-story-visual--overlapLeft{width:26%;max-width:450px;margin-left:16px;margin-right:auto;margin-top:-620px;position:relative;z-index:2}
+.case-story-visual--portraitOffset{width:32%;max-width:470px;margin-left:auto;margin-right:16px;margin-top:-60px;position:relative;z-index:2}
+.case-story--gac .case-story-visual--portrait{width:200px;max-width:45%;margin-left:auto;margin-right:auto}
+.case-story--askona .case-story-visual--portrait{width:29%;max-width:460px;margin-left:auto;margin-right:16px}
+@media(max-width:809px){
+  .case-story-visual--overlapRight{width:45%;margin-right:12px;margin-top:-150px}
+  .case-story-visual--overlapLeft{width:42%;margin-left:12px;margin-top:-260px}
+  .case-story-visual--portraitOffset{width:45%;margin-right:12px;margin-top:-15px}
+  .case-story--askona .case-story-visual--portrait{width:45%;margin-right:12px}
 }

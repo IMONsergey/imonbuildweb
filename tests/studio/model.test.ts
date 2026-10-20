@@ -1,7 +1,7 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
 import { readPath, writePath, fieldNodeID, cloneLayer, nodeID, newFields, schemaAtPath } from '../../src/studio/model'
-import { changeNodeStyle, designCSS, normalizeDesign } from '../../src/studio/styles'
+import { changeNodeStyle, changeGuides, currentGuides, designCSS, normalizeDesign } from '../../src/studio/styles'
 import { sanitizeDocument, safeRoute, schema } from '../../src/studio/schema'
 
 const page={title:'Page',path:'/page',kind:'standard',blocks:[{id:'a-1',blockType:'text',heading:'First',body:'One'},{id:'b-2',blockType:'text',heading:'Second',body:'Two'}]}
@@ -23,3 +23,34 @@ test('new block values respect defaults',()=>{assert.deepEqual(newFields([{name:
 
 test('preserves the original allowlisted video embed',()=>{const doc=sanitizeDocument('projects',{slug:'case',sourcePath:'/cases/case',title:'Test',sections:[{blockType:'visual',src:'https://kinescope.io/embed/abc123?autoplay=1'}]});assert.ok(doc.sections)})
 test('rejects arbitrary iframe destinations',()=>{assert.throws(()=>sanitizeDocument('projects',{slug:'case',sourcePath:'/cases/case',title:'Test',sections:[{blockType:'visual',src:'https://evil.example/embed/abc'}]}))})
+
+test('flex and grid rules are sanitized and scoped',()=>{
+ const design=changeNodeStyle(undefined,'block-a-1','tablet','display','grid')
+ const next=changeNodeStyle(design,'block-a-1','tablet','gridColumns',3)
+ assert.ok(designCSS(next).includes('grid-template-columns:repeat(3,minmax(0,1fr))'))
+ assert.ok(!designCSS(next).split('@media(max-width:700px)')[1].includes('position:fixed'))
+})
+test('invalid layout enum cannot become CSS',()=>{
+ const next=normalizeDesign({nodes:{'block-a-1':{desktop:{display:'grid;position:fixed',shadow:'none;color:red',widthPercent:10000}}}})
+ assert.deepEqual(next.nodes['block-a-1']?.desktop,{widthPercent:100})
+})
+test('custom animation uses scoped variables and validated numbers',()=>{
+ const design=normalizeDesign({nodes:{'block-a-1':{desktop:{motion:'rise',motionDistance:45,motionDuration:1.25,motionDelay:0.3}}}})
+ const css=designCSS(design)
+ assert.ok(css.includes('--imon-motion-scope:block-a-1'))
+ assert.ok(css.includes('--imon-motion-type:rise'))
+ assert.ok(css.includes('--imon-motion-duration:1.25'))
+})
+test('layout guides stay within allowed ranges and are breakpoint-specific',()=>{
+ const next=changeGuides(undefined,'phone',{columns:8,gap:13,margin:17})
+ assert.deepEqual(currentGuides(next,'phone'),{columns:8,gap:13,margin:17})
+ assert.deepEqual(currentGuides(next,'desktop'),{columns:12,gap:16,margin:16})
+ assert.equal(changeGuides(next,'phone',{columns:1000}).guides?.phone?.columns,24)
+})
+test('motion names cannot escape CSS rules',()=>{
+ const next=normalizeDesign({nodes:{hero:{desktop:{motion:'rise}body{color:red',motionDelay:-1,motionDuration:999}}}})
+ const css=designCSS(next)
+ assert.ok(!css.includes('body{color:red'))
+ assert.ok(css.includes('--imon-motion-duration:6'))
+ assert.ok(css.includes('--imon-motion-delay:0'))
+})

@@ -28,3 +28,10 @@ Never enable automatic schema `push` while multiple app bundles can use the data
 This is a component-based visual editor, not a complete reproduction of Framer's freeform layout engine. Arbitrary vector drawing, reusable component variants, collaborative cursors, custom interaction timelines and unrestricted reparenting are not implemented. Rich text formatting and system-wide access/settings still open the technical CMS. Do not describe any of those capabilities as finished.
 
 Source-template articles, portraits, showcase cases, legal placeholders and contact details still need editorial/legal approval before a public launch. Email/CRM delivery is not configured; the contact form stores leads in the database.
+
+## Контрольное обновление от 20 октября
+
+- API + Chrome workflow проверяет непосредственные изменения макета, сетки, текстов, анимации, порядок слоёв, публикацию и изоляцию черновиков. Тестовый браузер не должен подменять `Origin` и `Sec-Fetch-Site` глобально — это ломало загрузку ресурсов. API GET указывает Origin явно.
+- 23 страницы × 1440/768/390 = 69 маршрутов без HTTP/JS/геометрических ошибок. Проверка не является заявлением о точной анимационной идентичности.
+- Для Askona селекторы по именам медиа удалены. Композиция хранится как `visual.display` с вариантами `overlapRight`, `overlapLeft`, `portraitOffset`.
+- Все изменения остаются в изолированном worktree и его отдельной базе, основная ветка не затрагивается.

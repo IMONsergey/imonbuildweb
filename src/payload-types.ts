@@ -242,7 +242,8 @@ export interface Page {
             media?: (number | null) | Media;
             src?: string | null;
             caption?: string | null;
-            display?: ('wide' | 'full' | 'portrait' | 'contain') | null;
+            display?:
+              ('wide' | 'full' | 'portrait' | 'contain' | 'overlapRight' | 'overlapLeft' | 'portraitOffset') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'visual';
@@ -446,7 +447,8 @@ export interface Project {
             media?: (number | null) | Media;
             src?: string | null;
             caption?: string | null;
-            display?: ('wide' | 'full' | 'portrait' | 'contain') | null;
+            display?:
+              ('wide' | 'full' | 'portrait' | 'contain' | 'overlapRight' | 'overlapLeft' | 'portraitOffset') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'visual';
@@ -659,7 +661,8 @@ export interface Article {
             media?: (number | null) | Media;
             src?: string | null;
             caption?: string | null;
-            display?: ('wide' | 'full' | 'portrait' | 'contain') | null;
+            display?:
+              ('wide' | 'full' | 'portrait' | 'contain' | 'overlapRight' | 'overlapLeft' | 'portraitOffset') | null;
             id?: string | null;
             blockName?: string | null;
             blockType: 'visual';

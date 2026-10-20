@@ -412,7 +412,7 @@
       {
         "blockType": "visual",
         "src": "/media/XVtclO78Zy9cgdbTgJCOm4EBCU.webp",
-        "display": "portrait",
+        "display": "overlapRight",
         "caption": ""
       },
       {
@@ -502,7 +502,7 @@
       {
         "blockType": "visual",
         "src": "/media/oEoy2G1Rwrai7L4F0X5ErsbHjo.webp",
-        "display": "portrait",
+        "display": "overlapLeft",
         "caption": ""
       },
       {
@@ -521,7 +521,7 @@
       {
         "blockType": "visual",
         "src": "/media/WJ03F8jDjA8VMtymeGc4BU3ADo.webp",
-        "display": "portrait",
+        "display": "overlapRight",
         "caption": ""
       },
       {
@@ -594,7 +594,7 @@
       {
         "blockType": "visual",
         "src": "/media/t3Gq2rCvl3NJ3dXRvWcUBKmdg.webp",
-        "display": "portrait",
+        "display": "portraitOffset",
         "caption": ""
       }
     ],

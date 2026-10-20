@@ -21,7 +21,41 @@ export function SiteMotion() {
     gsap.registerPlugin(ScrollTrigger)
     const timer = window.setTimeout(() => ScrollTrigger.refresh(), 700)
     const ctx = gsap.context(() => {
+      const motionScope = (element: HTMLElement): string => getComputedStyle(element).getPropertyValue('--imon-motion-scope').trim()
+      const explicitMotion = (element: HTMLElement): boolean => {
+        let current: HTMLElement | null = element
+        while (current) {
+          const currentScope = motionScope(current)
+          if (currentScope && currentScope !== (current.parentElement ? motionScope(current.parentElement) : '')) return true
+          current = current.parentElement
+        }
+        return false
+      }
+      document.querySelectorAll<HTMLElement>('[data-studio-node],[data-studio-field]').forEach(element => {
+        const scope = motionScope(element)
+        if (!scope || scope === (element.parentElement ? motionScope(element.parentElement) : '')) return
+        const computed = getComputedStyle(element)
+        const motion = computed.getPropertyValue('--imon-motion-type').trim()
+        if (!motion || motion === 'none') return
+        const time = Number(computed.getPropertyValue('--imon-motion-duration')) || .95
+        const delay = Number(computed.getPropertyValue('--imon-motion-delay')) || 0
+        const distance = Number(computed.getPropertyValue('--imon-motion-distance')) || 32
+        if (motion === 'parallax') {
+          gsap.fromTo(element, { y: -distance / 2 }, { y: distance / 2, ease: 'none',
+            scrollTrigger: { trigger: element, start: 'top bottom', end: 'bottom top', scrub: .65 },
+          })
+          return
+        }
+        const from = motion === 'scale' ? { scale: .96, opacity: 0 } : motion === 'rise' ? { y: distance, opacity: 0 } : { opacity: 0 }
+        const isAboveFold = element.getBoundingClientRect().top < innerHeight * .6
+        gsap.fromTo(element, from, {
+          y: 0, opacity: 1, scale: 1, duration: time, delay,
+          ease: 'power3.out', clearProps: 'transform,opacity',
+          ...(isAboveFold ? {} : { scrollTrigger: { trigger: element, start: 'top 92%', once: true } }),
+        })
+      })
       document.querySelectorAll<HTMLElement>('[data-tone-title]').forEach(title => {
+        if (explicitMotion(title)) return
         gsap.fromTo(title,
           { color: 'rgb(172, 172, 174)' },
           { color: 'rgb(30, 30, 33)', ease: 'none', scrollTrigger: {
@@ -30,7 +64,7 @@ export function SiteMotion() {
         )
       })
       document.querySelectorAll<HTMLElement>('[data-animate="reveal"]').forEach((el) => {
-        if (el.closest('.hero-video')) return
+        if (el.closest('.hero-video') || explicitMotion(el)) return
         gsap.fromTo(el,
           { y: 32, opacity: .15, filter: 'blur(3px)' },
           { y: 0, opacity: 1, filter: 'blur(0px)', duration: .95,
@@ -39,6 +73,7 @@ export function SiteMotion() {
         )
       })
       document.querySelectorAll<HTMLElement>('[data-parallax-media]').forEach(el => {
+        if (explicitMotion(el)) return
         const image = el.querySelector('img,video') as HTMLElement | null
         if (!image) return
         gsap.fromTo(image,{ yPercent: -5, scale: 1.12 }, { yPercent: 5, scale: 1.12, ease: 'none',
@@ -46,12 +81,14 @@ export function SiteMotion() {
         })
       })
       document.querySelectorAll<HTMLElement>('.hero-title-line').forEach((el,i) => {
+        if (explicitMotion(el)) return
         gsap.fromTo(el, { y: 42, opacity: 0, filter: 'blur(8px)' }, {
           y: 0, opacity: 1, filter: 'blur(0px)', duration: 1.2,
           delay: .12+i*.11, ease: 'power3.out', clearProps: 'all',
         })
       })
       document.querySelectorAll<HTMLElement>('[data-photo-in]').forEach(el=>{
+        if (explicitMotion(el)) return
         const image=el.querySelector('img')
         if (!image)return
         gsap.fromTo(image,{scale:1.095},{scale:1,duration:1.35,ease:'power3.out',clearProps:'transform',

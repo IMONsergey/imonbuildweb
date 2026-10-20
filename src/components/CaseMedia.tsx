@@ -50,7 +50,7 @@ export function CaseMedia({ src, alt = '', className = '', poster }: {
       </button>}
   </div>
   if (/\.pdf(?:$|\?)/i.test(src)) return <a href={src} target="_blank" rel="noopener noreferrer" className="document-media-link">{alt || 'Открыть документ'} ↗</a>
-  if(!src.startsWith('/') && !/^https:\/\/(?:images\.|framerusercontent\.)/.test(src))return null
+  if (!src.startsWith('/') || src.startsWith('//')) return null
   return <div className={'case-media case-media--image '+className} data-photo-in>
     <img src={src} alt={alt||'Материал проекта'} width={intrinsicWidth} height={intrinsicHeight} loading="lazy"/>
   </div>

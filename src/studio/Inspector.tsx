@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { labels, readPath, isRecord, schemaAtPath, newFields, type StudioDocument, type FieldSpec, type RecordData, type MediaAsset, type Breakpoint } from './model'
 import { normalizeDesign, type NodeStyle } from './styles'
+import { LayoutControls, MotionControls } from './PropertyPanels'
 
 type Props = {
   document: StudioDocument; data: RecordData; selection: string; node: string; breakpoint: Breakpoint
@@ -12,7 +13,7 @@ type Props = {
 }
 function relative(prefix: string, key: string) { return prefix ? prefix + '.' + key : key }
 export function Inspector(props: Props) {
-  const [tab, setTab] = useState<'content' | 'layout' | 'seo'>('content')
+  const [tab, setTab] = useState<'content' | 'layout' | 'motion' | 'seo'>('content')
   const { document, data, selection, node, breakpoint, assets, setField, chooseMedia, select } = props
   const value = readPath(data, selection)
   let prefix = !selection || selection === 'hero' ? '' : isRecord(value) || Array.isArray(value) ? selection : selection.split('.').slice(0, -1).join('.')
@@ -29,18 +30,16 @@ export function Inspector(props: Props) {
   }
   const title = selection === 'hero' ? 'Первый экран' : isRecord(value) ? String(value.blockName || value.heading || value.blockType || 'Секция') : !selection ? 'Страница' : labels[selection.split('.').at(-1)!] || 'Элемент'
   const design = normalizeDesign(data.studio), style = design.nodes[node]?.[breakpoint] || {}
-  const numberStyle = (key: keyof NodeStyle, title: string, unit = 'px', step = 1) => <label className="st-property" key={key}><span>{title}</span><div className="st-unit-input"><input aria-label={title} type="number" min={0} step={step} value={String(style[key] ?? '')} placeholder="Auto" onChange={event => props.setStyle(key, event.target.value === '' ? '' : Number(event.target.value))}/><small>{unit}</small></div></label>
   return <aside className="st-inspector" aria-label="Свойства выбранного элемента">
     <div className="st-panel-heading"><span>{title}</span><small>{selection || document.collection}</small></div>
-    <div className="st-tabs st-inspector-tabs">{(['content', 'layout', 'seo'] as const).map(key => <button type="button" key={key} className={tab === key ? 'active' : ''} onClick={() => setTab(key)}>{key === 'content' ? 'Контент' : key === 'layout' ? 'Макет' : 'SEO'}</button>)}</div>
+    <div className="st-tabs st-inspector-tabs">{(['content', 'layout', 'motion', 'seo'] as const).map(key => <button type="button" key={key} className={tab === key ? 'active' : ''} onClick={() => setTab(key)}>{key === 'content' ? 'Контент' : key === 'layout' ? 'Макет' : key === 'motion' ? 'Анимация' : 'SEO'}</button>)}</div>
     <div className="st-inspector-scroll">
-      {tab !== 'layout' ? <FieldGroup fields={fields} data={data} prefix={prefix} assets={assets} setField={setField} chooseMedia={chooseMedia} select={select} depth={0} document={document}/> : <>
-        <div className="st-property-section"><h3>Адаптив <span>{breakpoint}</span></h3><p className="st-hint">{breakpoint === 'desktop' ? 'Базовые значения для всех размеров.' : 'Пустое поле наследует больший экран. Меняется только выбранный адаптив.'}</p></div>
-        <div className="st-property-section"><h3>Размер и расстояния</h3>{numberStyle('maxWidth', 'Максимальная ширина')}{numberStyle('minHeight', 'Минимальная высота')}{numberStyle('paddingTop', 'Отступ сверху')}{numberStyle('paddingBottom', 'Отступ снизу')}{numberStyle('paddingLeft', 'Отступ слева')}{numberStyle('paddingRight', 'Отступ справа')}{numberStyle('marginTop', 'Внешний сверху')}{numberStyle('marginBottom', 'Внешний снизу')}{numberStyle('borderRadius', 'Скругление')}{numberStyle('gap', 'Интервал')}</div>
-        <div className="st-property-section"><h3>Заголовок</h3>{numberStyle('fontSize', 'Размер шрифта')}{numberStyle('lineHeight', 'Высота строки', '×', 0.05)}<label className="st-property"><span>Выравнивание</span><select value={style.textAlign || ''} onChange={event => props.setStyle('textAlign', event.target.value)}><option value="">Auto</option><option value="left">Слева</option><option value="center">По центру</option><option value="right">Справа</option></select></label></div>
-        <div className="st-property-section"><h3>Цвет и видимость</h3>{(['backgroundColor', 'color'] as const).map(key => <label className="st-property" key={key}><span>{key === 'color' ? 'Текст' : 'Фон'}</span><div className="st-color-field"><input type="color" aria-label={key} value={/^#[a-f0-9]{6}$/i.test(String(style[key])) ? String(style[key]) : '#ffffff'} onChange={event => props.setStyle(key, event.target.value)}/><input aria-label={key + ' hex'} placeholder="Auto" value={style[key] || ''} onChange={event => props.setStyle(key, event.target.value)} /></div></label>)}<label className="st-check"><input type="checkbox" checked={style.hidden === true} onChange={event => props.setStyle('hidden', event.target.checked)}/>Скрыть на этом размере</label></div>
-        <button type="button" className="st-secondary st-full" onClick={props.resetStyle}>Сбросить переопределения</button>
-      </>}
+      {(tab === 'content' || tab === 'seo')
+        ? <FieldGroup fields={fields} data={data} prefix={prefix} assets={assets} setField={setField} chooseMedia={chooseMedia} select={select} depth={0} document={document}/>
+        : tab === 'layout'
+          ? <LayoutControls style={style} breakpoint={breakpoint} setStyle={props.setStyle} resetStyle={props.resetStyle}/>
+          : <MotionControls style={style} setStyle={props.setStyle} available={!!node && node !== 'root'}/>
+      }
       <div className="st-inspector-note"><span>Компонентная вёрстка</span><p>Исходные CSS и анимации сохраняются. Макет задаёт только явные переопределения выбранной секции.</p></div>
     </div>
   </aside>

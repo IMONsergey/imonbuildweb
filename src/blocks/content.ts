@@ -20,7 +20,15 @@ export const MediaBlock: Block = {
     { name: 'media', label: 'Медиафайл', type: 'upload', relationTo: 'media' },
     { name: 'src', label: 'Локальный путь исходного файла', type: 'text' },
     { name: 'caption', label: 'Подпись', type: 'text' },
-    { name: 'display', label: 'Размер', type: 'select', defaultValue: 'wide', options: ['wide', 'full', 'portrait', 'contain'].map(value => ({ label: value, value })) },
+    { name: 'display', label: 'Композиция медиа', type: 'select', defaultValue: 'wide', options: [
+      { label: 'Широкое', value: 'wide' },
+      { label: 'Во всю ширину', value: 'full' },
+      { label: 'Портрет', value: 'portrait' },
+      { label: 'Без обрезки', value: 'contain' },
+      { label: 'Наложение справа', value: 'overlapRight' },
+      { label: 'Наложение слева', value: 'overlapLeft' },
+      { label: 'Смещённый портрет', value: 'portraitOffset' },
+    ] },
   ],
 }
 
