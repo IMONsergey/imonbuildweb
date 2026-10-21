@@ -27,7 +27,8 @@
     "qa:studio": "node scripts/qa-studio-workflow.mjs",
     "qa:routes": "node scripts/audit-routes.mjs",
     "studio:prepare": "tsx scripts/prepare-studio-content.ts",
-    "qa:puck": "node scripts/qa-puck-flow.mjs"
+    "qa:puck": "node scripts/qa-puck-flow.mjs",
+    "qa:clean": "tsx scripts/clean-qa-fixtures.ts"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",
