@@ -61,3 +61,22 @@ Source Work/Contact/About mobile H1 ≈ 56px; rebuilt ≈ 80px. The source uses 
 6. Compare staging with the original before touching `main`; user must approve final visual parity.
 
 **Not yet delivered:** 1:1 full-site fidelity, frame-accurate animation parity, visual timeline editor, full Framer-equivalent component/CMS schema editor, and a licensed Revyme integration. No claim to the contrary should be made.
+
+## Additional source-preservation trials (2026-10-21)
+
+**Framecoded** ([endcycles/framer-copy](https://github.com/endcycles/framer-copy), MIT) claims conversion from published sites to framework-native Next.js/React with responsive capture and supported Motion transitions. A tested local export in `imon-builder-research/framecoded-export-probe` compiled and typechecked, but generated just **two routes**, Home and About, from this **23-route** site. It also retains framework-related CSS variables and is not an admin/CMS system. This is unsuitable as a drop-in replacement.
+
+**framer-exporter** ([osisdie/framer-exporter](https://github.com/osisdie/framer-exporter), MIT) independently crawled 21 linked routes and captured 379 assets. The fast research export deliberately skipped supplementary asset fetches, so it is **not a fully offline image baseline**. At desktop, the captured HTML reproduces original scroll heights (Home 9,212px, Work 3,291px, About 8,184px) but throws a React hydration error (#405) and `Invalid base URL` in the exported runtime, making interactions unusable. The two sitemap-only cases were not discovered. Never ship this static export as the live site; it is for geometry and asset reference only.
+
+**Full Site Export**, an independently published marketplace plugin, advertises pixel-exact static and Next.js exports but requires actual access to the source project. Verify licensing, functionality and whether the purchased template is editable before using it. It is not currently part of the worktree.
+
+### Pixel-fidelity actions
+
+- Source 390px Work title 56px vs previously 80px: adjusted to 56.16px and verified in Chrome.
+- Source mobile About/Contact photos are stacked landscape rather than side-by-side/tall portrait: corrected mobile media layout.
+- Mobile hero containers: Work 328px, About 309px, Contact 308px, with source-like 390px image starts.
+- Cross-platform Unicode arrows replaced with a consistent SVG. No changes to links, actions or hover intent.
+- Semantic spaces restored in the homepage title's three block spans.
+- **Remaining mismatch**: full-page heights and lower sections differ substantially; pixel-perfect reproduction and animation equivalence are not claimed.
+
+A two-way CMS editor and original motion cannot both be obtained merely by copying a static export: one must map each live React component and its editable fields to CMS records, while retaining proper hydration, responsive rules, events and real original imagery.
