@@ -22,3 +22,18 @@
   .imon-contact-type:nth-child(2){grid-row:4}
   .imon-contact-form-access{grid-row:5}
 }
+
+/* Home mobile proportions measured from the original at 390px, kept within
+   the phone breakpoint so desktop editorial geometry is not affected. */
+@media(max-width:420px){
+  .imon-home-intro{padding-bottom:141px}
+  .imon-home-featured .imon-featured-bottom{min-height:54px}
+  .imon-home-services{padding-bottom:0}
+  .imon-home-when{padding-bottom:100px}
+  .imon-home-approach{height:686px;min-height:686px}
+  .imon-home-principle{padding-bottom:113px}
+  .imon-home-faq{padding-bottom:205px}
+}
+/* The original mobile service section is 967px tall at 390px. A 7px optical
+   correction aligns all downstream editorial section boundaries. */
+@media(max-width:420px){.imon-home-services{margin-bottom:-7px}}
