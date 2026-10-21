@@ -1,0 +1,120 @@
+/*
+ * Framer source parity overrides (21 October 2026).
+ * Evidence: browser-captured 1440/390 screenshots and computed font/box metrics.
+ * Keep existing responsive DOM/CMS fields; only correct source geometry.
+ */
+@media (min-width: 810px) {
+  .hero-video { padding-top: calc(var(--header) + 8px); }
+  .hero-video h1 { font-size: clamp(72px, 10.333333vw, 168px); }
+
+  .case-story--askona .case-hero {
+    height: 696px;
+    min-height: 696px;
+  }
+  .case-story--askona .case-hero > h1 {
+    font-size: clamp(100px, 12.64vw, 184px);
+    max-width: min(100%, 1040px);
+    line-height: .91;
+    letter-spacing: -.071em;
+  }
+  .case-story--askona .case-hero > p {
+    top: 589px;
+    font-size: 16px;
+    line-height: 1.38;
+    letter-spacing: -.012em;
+  }
+  .case-story--askona .case-meta { bottom: -4px; }
+  .inside-hero--work + .listing-section .card-meta { min-height: 54px; }
+}
+
+/* Framer inner pages all use the same restrained 56px mobile title, not 80px. */
+@media (max-width: 700px) {
+  .hero-video { padding-top: 60px; }
+  .hero-video h1 { font-size: clamp(43px, 13.128205vw, 69px); }
+  .hero-caption { bottom: 66px; }
+
+  .inside-hero--work,
+  .inside-hero--news,
+  .inside-hero--contact,
+  .inside-hero--about { height: auto; }
+
+  .inside-hero--work { min-height: 325px; }
+  .inside-hero--news { min-height: 325px; }
+  .inside-hero--contact { min-height: 315px; }
+  .inside-hero--about { min-height: 305px; }
+
+  .inside-hero--work .inside-hero__bottom h1,
+  .inside-hero--news .inside-hero__bottom h1,
+  .inside-hero--contact .inside-hero__bottom h1,
+  .inside-hero--about .inside-hero__bottom h1 {
+    font-size: 56px;
+    line-height: .99;
+    letter-spacing: -.069em;
+    font-weight: 590;
+  }
+  .inside-hero__top p {
+    font-size: clamp(22px, 5.9vw, 24px);
+    line-height: 1.14;
+    letter-spacing: -.045em;
+  }
+  .inside-hero--about .inside-hero__bottom { padding-bottom: 9px; }
+  .inside-hero__bottom span { margin-bottom: 6px; font-size: 13px; }
+
+  .inside-hero--work + .listing-section .card-meta { min-height: 53px; }
+  .inside-hero--work + .listing-section .filtered-section { padding-top: 14px; }
+
+  .imon-about-image { height: 201px; }
+  .imon-about-statement p { font-size: clamp(25px, 6.6vw, 29px); line-height: 1.06; }
+  .imon-about-statement { padding-top: 17px; padding-bottom: 56px; }
+  .imon-about-team-title h2 { font-size: clamp(65px, 15.5vw, 108px); }
+
+  .case-story .case-hero { padding-top: 62px; }
+  .case-story .case-hero > h1 {
+    font-size: 56px;
+    line-height: .93;
+    letter-spacing: -.07em;
+  }
+  .case-story--askona .case-hero { height: 534px; min-height: 534px; }
+  .case-story--askona .case-hero > h1 { font-size: 56px; line-height: .93; }
+  .case-story--askona .case-hero > p {
+    top: 259px;
+    left: 12px;
+    width: calc(100% - 24px);
+    font-size: 16px;
+    font-weight: 440;
+    line-height: 1.28;
+    letter-spacing: -.02em;
+  }
+  .case-story--askona .case-meta {
+    bottom: 17px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .case-story--askona .case-meta > div { gap: 3px; }
+  .case-story--askona .case-meta span { font-size: 13px; }
+  .case-story--askona .case-meta strong { font-size: 15px; }
+}
+
+/* The source service accordion uses a restrained horizontal stroke, not a large plus glyph. */
+.imon-service-control{display:grid;place-items:center;width:32px;height:32px;font-size:0;line-height:1;transform:none!important;opacity:.8;transition:opacity .25s}
+.imon-service-control::before{content:"";display:block;width:32px;height:2px;background:currentColor}
+.imon-service-item.is-open .imon-service-control{opacity:1}
+@media(max-width:700px){.imon-service-control{width:23px;height:26px}.imon-service-control::before{width:22px;height:2px}}
+/* One stroke-based arrow throughout the I’MON editorial system. */
+.imon-arrow { display:inline-block; width:1em; height:1em; flex-shrink:0; vertical-align:-.12em; overflow:visible; }
+.card-arrow>.imon-arrow, .imon-featured-arrow>.imon-arrow { width:22px; height:22px; }
+.imon-magazine-arrow>.imon-arrow, .imon-news-caption .imon-arrow { width:19px; height:19px; }
+.imon-about-icon>.imon-arrow { width:25px; height:25px; }
+.imon-featured-bottom .imon-arrow,.footer-main .imon-arrow { width:24px;height:24px; }
+.imon-service-control>.imon-arrow { display:none; }
+@media(prefers-reduced-motion:reduce){.imon-arrow{transform:none!important;}}
+/* Additional 1440px typographic measurements from the purchased source. */
+@media(min-width:810px){
+  .inside-hero--work,.inside-hero--about{min-height:477px;height:477px}
+  .inside-hero--work .inside-hero__top p{font-size:clamp(28px,2.9vw,42px);line-height:1.015;letter-spacing:-.055em}
+  .case-story--gac .case-hero>h1{font-size:clamp(92px,12.64vw,185px)}
+}
+@media(max-width:700px){
+  .case-story--gac .case-hero>h1{font-size:56px}
+}

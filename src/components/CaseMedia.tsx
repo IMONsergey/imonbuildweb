@@ -1,4 +1,5 @@
 'use client'
+import { ArrowIcon } from './ArrowIcon'
 import { useEffect, useRef, useState } from 'react'
 import dimensions from '@/content/mediaDimensions.json'
 import { isVideoEmbed } from '@/lib/mediaPolicy'
@@ -49,7 +50,7 @@ export function CaseMedia({ src, alt = '', className = '', poster }: {
         <span className="case-embed-play" aria-hidden="true">▶</span>
       </button>}
   </div>
-  if (/\.pdf(?:$|\?)/i.test(src)) return <a href={src} target="_blank" rel="noopener noreferrer" className="document-media-link">{alt || 'Открыть документ'} ↗</a>
+  if (/\.pdf(?:$|\?)/i.test(src)) return <a href={src} target="_blank" rel="noopener noreferrer" className="document-media-link">{alt || 'Открыть документ'} <ArrowIcon/></a>
   if (!src.startsWith('/') || src.startsWith('//')) return null
   return <div className={'case-media case-media--image '+className} data-photo-in>
     <img src={src} alt={alt||'Материал проекта'} width={intrinsicWidth} height={intrinsicHeight} loading="lazy"/>

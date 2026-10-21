@@ -1,3 +1,4 @@
+import { ArrowIcon } from './ArrowIcon'
 import { LeadForm } from './Interactive'
 import { mediaPath, siteSettings } from '@/lib/site'
 import type { DisplayBlock } from '@/lib/defaultBlocks'
@@ -19,8 +20,8 @@ export async function ContactSections({ blocks }: { blocks: DisplayBlock[] }) {
       </section>)
     } else if (block.blockType === 'contact') {
       if (!contactPrinted) sections.push(<section className="imon-contact-information" key="contact-information">
-        {settings.email && <div className="imon-contact-type"><span>Для бизнеса</span><a href={'mailto:' + settings.email}>{settings.email} ↗</a></div>}
-        {settings.telegram && <div className="imon-contact-type"><span>Telegram</span><a href={settings.telegram} rel="noreferrer noopener" target="_blank">{settings.telegram.replace(/^https:\/\/t.me\//, '@')} ↗</a></div>}
+        {settings.email && <div className="imon-contact-type"><span>Для бизнеса</span><a href={'mailto:' + settings.email}>{settings.email} <ArrowIcon/></a></div>}
+        {settings.telegram && <div className="imon-contact-type"><span>Telegram</span><a href={settings.telegram} rel="noreferrer noopener" target="_blank">{settings.telegram.replace(/^https:\/\/t.me\//, '@')} <ArrowIcon/></a></div>}
       </section>)
       contactPrinted = true
       sections.push(<section className="imon-contact-form-access" key={block.id || index} {...nodeProps(block, index)}>
