@@ -22,6 +22,8 @@ export function PuckBuilder({ initial, directory, initialAssets }: {
   const [error, setError] = useState('')
   const [publishDate, setPublishDate] = useState('')
   const [showDocuments, setShowDocuments] = useState(false)
+  const [exactPreview, setExactPreview] = useState(false)
+  const [exactLoading, setExactLoading] = useState(false)
   const [search, setSearch] = useState('')
   const [showCreate, setShowCreate] = useState(false)
   const [createCollection, setCreateCollection] = useState<StudioCollection>('pages')
@@ -96,6 +98,16 @@ export function PuckBuilder({ initial, directory, initialAssets }: {
     const succeeded=await sendSave(data,'publish')
     if(!succeeded)throw new Error('Не удалось опубликовать документ. Изменения остаются в редакторе.')
   },[sendSave])
+  const toggleExactPreview = useCallback(async () => {
+    if (exactLoading) return
+    if (exactPreview) { setExactPreview(false); return }
+    if (timer.current) { clearTimeout(timer.current);timer.current=null }
+    setExactLoading(true)
+    try {
+      const ok=await sendSave(currentData.current,'draft')
+      if (ok) setExactPreview(true)
+    } finally { setExactLoading(false) }
+  }, [exactLoading, exactPreview, sendSave])
   const createDocument = useCallback(async (event: React.FormEvent) => {
     event.preventDefault()
     if (createBusy) return
@@ -132,6 +144,7 @@ export function PuckBuilder({ initial, directory, initialAssets }: {
       <button className="imon-puck-new" type="button" onClick={()=>{setCreateTitle('Новая страница');setCreatePath('/new-page');setCreateCollection('pages');setShowCreate(true)}}>+ Страница</button>
       <span className="imon-puck-url">{path}</span>
       <div className="imon-puck-actions">
+        <button type="button" className={'imon-puck-exact-toggle'+(exactPreview?' active':'')} aria-pressed={exactPreview} disabled={exactLoading || status==='saving'} onClick={()=>void toggleExactPreview()}>{exactLoading?'Сохраняем…':exactPreview?'Вернуться к блокам':'Точный вид сайта'}</button>
         <Link href={'/studio?collection='+initial.collection+'&id='+initial.id}>Редактор макета</Link>
         <a href={'/studio/canvas?collection='+initial.collection+'&id='+initial.id} target="_blank" rel="noreferrer">Точная страница ↗</a>
         <span className={'imon-puck-state imon-puck-state-'+status} role="status">
@@ -195,6 +208,10 @@ export function PuckBuilder({ initial, directory, initialAssets }: {
           {width:390,height:'auto',label:'Phone · 390'},
         ]}
       />
+      {exactPreview && <div className="imon-puck-exact-view" role="region" aria-label="Точная версия сайта">
+        <header><span>Настоящий сайт · {path} · черновик</span><button type="button" onClick={()=>setExactPreview(false)}>Вернуться к редактированию ×</button></header>
+        <iframe title="Точный предпросмотр страницы" src={'/studio/canvas?collection='+initial.collection+'&id='+initial.id+'&mode=preview'} sandbox="allow-scripts allow-same-origin allow-forms"/>
+      </div>}
     </div>
     <div className="imon-puck-preview-notice">Конструктор редактирует настоящие блоки CMS. Для точной проверки сетки и GSAP используйте «Точная страница» — это тот же рендерер, что на сайте.</div>
   </div>

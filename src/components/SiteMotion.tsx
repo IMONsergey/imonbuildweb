@@ -17,7 +17,7 @@ export function SiteMotion() {
     return () => window.removeEventListener('imon:canvas-mode', mode)
   }, [])
   useEffect(() => {
-    if (reduced() || pathname.startsWith('/studio/canvas') && !canvasPreview) return
+    if (reduced() || pathname.startsWith('/studio/canvas') && !canvasPreview && new URLSearchParams(location.search).get('mode') !== 'preview') return
     gsap.registerPlugin(ScrollTrigger)
     const timer = window.setTimeout(() => ScrollTrigger.refresh(), 700)
     const ctx = gsap.context(() => {

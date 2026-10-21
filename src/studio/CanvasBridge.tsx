@@ -7,9 +7,9 @@ export function CanvasBridge({ data }: { data: RecordData }) {
   useEffect(() => {
     const parent = window.parent
     if (parent === window) return
-    let interactive = false, selected = '', editor: HTMLElement | null = null, dragging = ''
+    let interactive = new URLSearchParams(location.search).get('mode') === 'preview', selected = '', editor: HTMLElement | null = null, dragging = ''
     const send = (message: RecordData) => parent.postMessage({ source: 'imon-canvas', ...message }, location.origin)
-    document.documentElement.dataset.studioEditing = 'true'
+    document.documentElement.dataset.studioEditing = interactive ? 'false' : 'true'
     const outline = document.createElement('div'), label = document.createElement('button'), hover = document.createElement('div')
     outline.className = 'studio-selection-outline'; hover.className = 'studio-hover-outline'; label.className = 'studio-selection-label'; label.type = 'button'; label.draggable = true
     outline.append(label); document.body.append(outline, hover)
