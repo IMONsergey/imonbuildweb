@@ -86,8 +86,28 @@ export function CanvasBridge({ data }: { data: RecordData }) {
     }
     const onScroll = () => { redraw(); send({ type: 'scroll', y: window.scrollY }) }
     const dragStart = (event: DragEvent) => { dragging = query(selected)?.closest<HTMLElement>('[data-studio-path]')?.dataset.studioPath || ''; event.dataTransfer?.setData('text/plain', dragging) }
-    const dragOver = (event: DragEvent) => { if (dragging) { event.preventDefault(); rectangle(hover, (event.target as HTMLElement).closest('[data-studio-path]')) } }
-    const drop = (event: DragEvent) => { if (!dragging) return; event.preventDefault(); const target = (event.target as HTMLElement).closest<HTMLElement>('[data-studio-path]')?.dataset.studioPath; if (target && target !== dragging) send({ type: 'reorder', from: dragging, to: target }); dragging = '' }
+    const dragOver = (event: DragEvent) => {
+      if (!dragging && !event.dataTransfer?.types.includes('application/x-imon-block')) return
+      event.preventDefault()
+      if (event.dataTransfer) event.dataTransfer.dropEffect = dragging ? 'move' : 'copy'
+      rectangle(hover, (event.target as HTMLElement).closest('[data-studio-path]'))
+    }
+    const drop = (event: DragEvent) => {
+      const blockType = event.dataTransfer?.getData('application/x-imon-block')
+      if (blockType && /^[a-z][a-zA-Z0-9]{1,60}$/.test(blockType)) {
+        event.preventDefault(); event.stopPropagation()
+        const target = (event.target as HTMLElement).closest<HTMLElement>('[data-studio-path]')
+        const rectangle = target?.getBoundingClientRect()
+        const before = !!rectangle && event.clientY < rectangle.top + rectangle.height / 2
+        send({ type: 'insert', blockType, path: target?.dataset.studioPath || '', before })
+        dragging = ''; hover.style.display = 'none'; return
+      }
+      if (!dragging) return
+      event.preventDefault()
+      const target = (event.target as HTMLElement).closest<HTMLElement>('[data-studio-path]')?.dataset.studioPath
+      if (target && target !== dragging) send({ type: 'reorder', from: dragging, to: target })
+      dragging = ''; hover.style.display = 'none'
+    }
     label.addEventListener('dragstart', dragStart)
     document.addEventListener('click', click, true); document.addEventListener('dblclick', doubleClick, true); document.addEventListener('input', onInput); document.addEventListener('paste', onPaste); document.addEventListener('mousemove', move); document.addEventListener('keydown', keydown); document.addEventListener('dragover', dragOver); document.addEventListener('drop', drop)
     window.addEventListener('message', message); window.addEventListener('scroll', onScroll, { passive: true }); window.addEventListener('resize', redraw)

@@ -1,3 +1,4 @@
+import { ArrowIcon } from './ArrowIcon'
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { SiteHeader } from './Interactive'
@@ -32,13 +33,13 @@ export async function SiteShell({ children, overlay = false, isPreview = false, 
         </nav></div>
         <div className="footer-social"><span className="footer-social-label">Контакт</span>
           <a href={'mailto:'+settings.email}>{settings.email}</a>
-          <a href={settings.telegram || 'https://t.me/imonagency'} target="_blank" rel="noopener noreferrer">Telegram ↗</a>
+          <a href={settings.telegram || 'https://t.me/imonagency'} target="_blank" rel="noopener noreferrer">Telegram <ArrowIcon/></a>
         </div>
       </div>
-      <div className="footer-main" {...(footerBlock ? nodeProps(footerBlock.block, footerBlock.index) : {})}><p {...(footerBlock ? fieldProps(`blocks.${footerBlock.index}.heading`) : {})}>{footerHeading || settings.footerMessage || 'Обсудим следующий уровень вашего бизнеса'}</p><Link href={footerBlock?.block.href || '/contact'}><span {...(footerBlock ? fieldProps(`blocks.${footerBlock.index}.buttonText`) : {})}>{footerBlock?.block.buttonText || 'Обсудить задачу'}</span><span>↗</span></Link></div>
+      <div className="footer-main" {...(footerBlock ? nodeProps(footerBlock.block, footerBlock.index) : {})}><p {...(footerBlock ? fieldProps(`blocks.${footerBlock.index}.heading`) : {})}>{footerHeading || settings.footerMessage || 'Обсудим следующий уровень вашего бизнеса'}</p><Link href={footerBlock?.block.href || '/contact'}><span {...(footerBlock ? fieldProps(`blocks.${footerBlock.index}.buttonText`) : {})}>{footerBlock?.block.buttonText || 'Обсудить задачу'}</span><span><ArrowIcon/></span></Link></div>
       <div className="footer-bottom"><span>© {new Date().getFullYear()} I’MON</span>
         <div><Link href="/privacy-policy">Конфиденциальность</Link><Link href="/term-condition">Условия использования</Link></div>
-        <div className="footer-contact"><a href={'mailto:'+settings.email}>{settings.email}</a><a href={settings.telegram || 'https://t.me/imonagency'} target="_blank" rel="noopener noreferrer">Telegram ↗</a></div>
+        <div className="footer-contact"><a href={'mailto:'+settings.email}>{settings.email}</a><a href={settings.telegram || 'https://t.me/imonagency'} target="_blank" rel="noopener noreferrer">Telegram <ArrowIcon/></a></div>
       </div>
     </footer>
   </div>
@@ -65,7 +66,7 @@ export async function PageView({ page, isPreview = false }: { page: ContentPage;
     const heroImage=mediaPath(field(page,'heroImage',null),field(page,'heroImagePath',fallback.images[0]||''))
     const headline=field(page,'heroTitle',fallback.texts[0])
     const styledHeadline = headline === fallback.texts[0]
-      ? <><span className="hero-title-line">Бренд, продукт</span><span className="hero-title-line">и digital — как</span><span className="hero-title-line">единая <span className="hero-mobile-line">система</span></span></>
+      ? <><span className="hero-title-line">Бренд, продукт </span><span className="hero-title-line">и digital — как </span><span className="hero-title-line">единая <span className="hero-mobile-line">система</span></span></>
       : <span className="hero-title-line" style={{ whiteSpace: 'pre-line' }}>{headline}</span>
     const footerIndex = blocks.length - 1
     const footerBlock = blocks[footerIndex]?.blockType === 'cta' ? { block: blocks[footerIndex], index: footerIndex } : undefined

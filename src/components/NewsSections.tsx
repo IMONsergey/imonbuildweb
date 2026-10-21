@@ -1,3 +1,4 @@
+import { ArrowIcon } from './ArrowIcon'
 import Link from 'next/link'
 import { siteArticles, field, entityCover } from '@/lib/site'
 import type { DisplayBlock } from '@/lib/defaultBlocks'
@@ -14,7 +15,7 @@ export async function NewsSections({ blocks }: { blocks: DisplayBlock[] }) {
         return <Link className="imon-news-card" data-photo-in href={'/news/' + slug} key={slug || String(i)}>
           <span className="imon-news-category">{field<string>(article, 'category', 'Журнал')}</span>
           <div className="imon-news-image">{image && <img src={image} alt={title} loading={i < 4 ? 'eager' : 'lazy'}/>}</div>
-          <div className="imon-news-caption"><h2>{title}</h2><span aria-hidden="true">↗</span></div>
+          <div className="imon-news-caption"><h2>{title}</h2><span aria-hidden="true"><ArrowIcon/></span></div>
         </Link>
       })}</div>
     </section>

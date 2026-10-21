@@ -66,9 +66,9 @@ export function SiteMotion() {
       document.querySelectorAll<HTMLElement>('[data-animate="reveal"]').forEach((el) => {
         if (el.closest('.hero-video') || explicitMotion(el)) return
         gsap.fromTo(el,
-          { y: 32, opacity: .15, filter: 'blur(3px)' },
-          { y: 0, opacity: 1, filter: 'blur(0px)', duration: .95,
-            ease: 'power3.out', clearProps: 'filter,transform,opacity',
+          { y: 12, opacity: .04 },
+          { y: 0, opacity: 1, duration: .75,
+            ease: 'power2.out', clearProps: 'transform,opacity',
             scrollTrigger: { trigger: el, start: 'top 95%', once: true }},
         )
       })
@@ -82,16 +82,16 @@ export function SiteMotion() {
       })
       document.querySelectorAll<HTMLElement>('.hero-title-line').forEach((el,i) => {
         if (explicitMotion(el)) return
-        gsap.fromTo(el, { y: 42, opacity: 0, filter: 'blur(8px)' }, {
-          y: 0, opacity: 1, filter: 'blur(0px)', duration: 1.2,
-          delay: .12+i*.11, ease: 'power3.out', clearProps: 'all',
+        gsap.fromTo(el, { y: 18, opacity: 0 }, {
+          y: 0, opacity: 1, duration: 1.35,
+          delay: .1+i*.12, ease: 'power2.out', clearProps: 'transform,opacity',
         })
       })
       document.querySelectorAll<HTMLElement>('[data-photo-in]').forEach(el=>{
         if (explicitMotion(el)) return
         const image=el.querySelector('img')
         if (!image)return
-        gsap.fromTo(image,{scale:1.095},{scale:1,duration:1.35,ease:'power3.out',clearProps:'transform',
+        gsap.fromTo(image,{scale:1.035},{scale:1,duration:.86,ease:'power2.out',clearProps:'transform',
           scrollTrigger:{trigger:el,start:'top 92%',once:true}})
       })
     })
@@ -118,7 +118,7 @@ export function ServiceAccordion({ items, fieldBase = '' }: { items: ServiceEntr
         aria-controls={id+'-service-panel-'+i} onClick={()=>setActive(active===i?null:i)}>
         <span className="imon-service-number">{item.number||String(i+1).padStart(2,'0')}</span>
         <span className="imon-service-label" {...fieldProps(`${fieldBase}.${i}.title`)}>{item.title}</span>
-        <span className="imon-service-control" aria-hidden="true">{active===i?'−':'+'}</span>
+        <span className="imon-service-control" aria-hidden="true"/>
       </button>
       <div id={id+'-service-panel-'+i} className="imon-service-panel" inert={active!==i}>
         <div className="imon-service-panel-inner">
