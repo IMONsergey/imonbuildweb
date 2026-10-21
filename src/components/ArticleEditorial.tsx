@@ -1,3 +1,4 @@
+import { ArrowUpRight } from './ArrowUpRight'
 import Link from 'next/link'
 import { field, entityCover, siteArticles, type ContentArticle } from '@/lib/site'
 import type { DisplayBlock } from '@/lib/defaultBlocks'
@@ -35,7 +36,7 @@ export async function ArticleEditorial({ article, blocks }: { article: ContentAr
       <div className="imon-article-related-heading"><h2 {...fieldProps(`sections.${last}.heading`)}>{related.heading || 'Другие публикации'}</h2><span>(Читайте также)</span></div>
       <div className="imon-news-grid">{other.slice(0,related.limit ?? 4).map((item,i) => {
         const title = field<string>(item,'title','Журнал'), image = entityCover(item), slug = field<string>(item,'slug','').replace(/^news\//,'')
-        return <Link key={slug || i} className="imon-news-card" href={'/news/' + slug} data-photo-in><span className="imon-news-category">{field<string>(item,'category','Журнал')}</span><div className="imon-news-image">{image && <img src={image} loading="lazy" alt={title}/>}</div><div className="imon-news-caption"><h3>{title}</h3><span aria-hidden="true">↗</span></div></Link>
+        return <Link key={slug || i} className="imon-news-card" href={'/news/' + slug} data-photo-in><span className="imon-news-category">{field<string>(item,'category','Журнал')}</span><div className="imon-news-image">{image && <img src={image} loading="lazy" alt={title}/>}</div><div className="imon-news-caption"><h3>{title}</h3><span aria-hidden="true"><ArrowUpRight/></span></div></Link>
       })}</div>
     </section>}
   </>

@@ -1,4 +1,5 @@
 'use client'
+import { ArrowUpRight } from './ArrowUpRight'
 
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
@@ -67,8 +68,8 @@ export function SiteHeader({ overlay = false, links, ctaText = 'Связатьс
     </header>
     <div id="mobile-navigation" className={'mobile-nav ' + (open ? 'mobile-nav--open' : '')} inert={!open}>
       <nav aria-label="Мобильная навигация">
-        {links.map((link, i) => <Link href={link.href} onClick={() => setOpen(false)} key={link.href}><small>0{i + 1}</small>{link.label}<span>↗</span></Link>)}
-        <Link href={ctaHref} onClick={() => setOpen(false)}><small>04</small>{ctaText}<span>↗</span></Link>
+        {links.map((link, i) => <Link href={link.href} onClick={() => setOpen(false)} key={link.href}><small>0{i + 1}</small>{link.label}<span><ArrowUpRight/></span></Link>)}
+        <Link href={ctaHref} onClick={() => setOpen(false)}><small>04</small>{ctaText}<span><ArrowUpRight/></span></Link>
       </nav>
       <div className="mobile-nav__bottom"><Clock zone="Europe/Moscow" prefix="МСК" /><Clock zone="Asia/Dubai" prefix="ДУБАЙ" /></div>
     </div>
@@ -110,7 +111,7 @@ export function FilteredGrid({ items, mode = 'work', showFilters = true }: { ite
     <div className="card-grid">
       {filtered.map((item, i) => <Link href={item.href} className="project-card" key={item.href}>
         <div className="card-meta"><span>{item.title}</span><span className="card-subtitle">{item.description || item.category}</span></div>
-        <div className="card-media">{item.cover && <img src={item.cover} loading={i > 1 ? 'lazy' : 'eager'} alt={item.title} />}<span className="card-arrow">↗</span></div>
+        <div className="card-media">{item.cover && <img src={item.cover} loading={i > 1 ? 'lazy' : 'eager'} alt={item.title} />}<span className="card-arrow"><ArrowUpRight/></span></div>
         {mode === 'journal' && <div className="card-category">{item.category}</div>}
       </Link>)}
     </div>
@@ -149,6 +150,6 @@ export function LeadForm() {
     </div>
     <label className="honeypot" aria-hidden="true">Ваш сайт<input tabIndex={-1} name="website" autoComplete="off" value={data.website} onChange={e => setData({ ...data, website: e.target.value })} /></label>
     <label className="consent-line"><input type="checkbox" required checked={data.consent} onChange={e => setData({ ...data, consent: e.target.checked })} /><span>Согласен на обработку персональных данных для ответа на обращение. <Link href="/privacy-policy">Подробнее</Link>.</span></label>
-    <div className="form-actions"><button className="form-submit" disabled={state === 'sending'} type="submit">{state === 'sending' ? 'Отправляем…' : 'Отправить заявку'}<span>↗</span></button><span aria-live="polite" role={state === 'error' ? 'alert' : 'status'}>{state === 'success' ? 'Заявка получена. Свяжемся с вами.' : state === 'error' ? error : ''}</span></div>
+    <div className="form-actions"><button className="form-submit" disabled={state === 'sending'} type="submit">{state === 'sending' ? 'Отправляем…' : 'Отправить заявку'}<span><ArrowUpRight/></span></button><span aria-live="polite" role={state === 'error' ? 'alert' : 'status'}>{state === 'success' ? 'Заявка получена. Свяжемся с вами.' : state === 'error' ? error : ''}</span></div>
   </form>
 }

@@ -330,3 +330,19 @@ button,a,summary,input,textarea { -webkit-tap-highlight-color:transparent; }
 .inside-hero--legal .inside-hero__bottom h1,.inside-hero--standard .inside-hero__bottom h1{font-size:clamp(42px,9vw,130px);overflow-wrap:anywhere;line-height:.97;max-width:100%}.inside-hero--legal .inside-hero__bottom,.inside-hero--standard .inside-hero__bottom{flex-wrap:wrap}section[id],[data-studio-path]{scroll-margin-top:65px}
 
 .inside-hero-media{margin:24px var(--gutter) 60px}.inside-hero-media img,.inside-hero-media video{display:block;max-height:90vh;width:100%;object-fit:contain}.document-media-link{display:block;border:1px solid #ccc;padding:28px;font-size:20px;line-height:1.3}
+
+/* Unified vector arrows: no font glyph substitution or platform-specific arrow metrics. */
+.imon-arrow{width:1em;height:1em;display:inline-block;vertical-align:-.13em;flex:0 0 auto;overflow:visible;stroke:currentColor}
+.card-arrow,.imon-featured-arrow,.imon-magazine-arrow{align-items:center;justify-content:center}
+.card-arrow .imon-arrow,.imon-featured-arrow .imon-arrow{width:21px;height:21px;stroke-width:1.7}
+.imon-magazine-arrow .imon-arrow{width:20px;height:20px}
+@media(max-width:700px){
+ .inside-hero--work .inside-hero__bottom h1,
+ .inside-hero--about .inside-hero__bottom h1,
+ .inside-hero--news .inside-hero__bottom h1,
+ .inside-hero--contact .inside-hero__bottom h1{
+   font-size:clamp(56px,14.4vw,95px);
+   line-height:.94;
+   letter-spacing:-.075em;
+ }
+}
