@@ -135,3 +135,22 @@
 .imon-puck-create footer button:disabled{opacity:.55;cursor:wait}
 
 .imon-puck-editor{position:relative}.imon-puck-exact-toggle{border:1px solid #50647b;border-radius:5px;background:#293d53;color:#cae1fa;min-height:34px;padding:7px 10px;font-size:11px;font-weight:600;cursor:pointer}.imon-puck-exact-toggle.active{background:#225e86;color:#fff}.imon-puck-exact-toggle:disabled{opacity:.55;cursor:wait}.imon-puck-exact-view{position:absolute;inset:0;z-index:50;background:#17181b;display:flex;flex-direction:column;overflow:hidden}.imon-puck-exact-view>header{height:36px;display:flex;align-items:center;justify-content:space-between;background:#24272d;color:#a7bdd3;padding:0 14px;gap:20px;flex-shrink:0;font-size:11px}.imon-puck-exact-view>header button{background:none;border:0;color:#e3e8ef;cursor:pointer;font:inherit;white-space:nowrap}.imon-puck-exact-view iframe{width:100%;height:100%;border:0;background:white;flex:1;min-height:0}
+
+/* Exact site canvas: editing uses the actual public renderer, not a Puck approximation. */
+.imon-puck-exact-view > header{min-height:48px;height:auto;flex-wrap:wrap;padding:7px 14px;gap:8px}
+.imon-puck-exact-tools{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.imon-puck-mode{display:inline-flex;gap:0;background:#171b22;border:1px solid #4c5664;border-radius:5px;padding:2px}
+.imon-puck-mode button{padding:7px 10px;border:0;border-radius:3px;background:transparent;color:#9eacbd;white-space:nowrap;cursor:pointer;font:inherit}
+.imon-puck-mode button.selected{background:#394858;color:#f7faff}
+.imon-puck-exact-size{display:flex;align-items:center;gap:7px;color:#aab7c7;font-size:11px}
+.imon-puck-exact-size select{background:#252b35;color:#e9edf2;border:1px solid #516071;border-radius:4px;padding:7px;max-width:170px;font-size:11px}
+.imon-puck-exact-return{padding:7px 0!important;color:white!important;font-weight:600!important}
+.imon-puck-exact-hint{flex:none;background:#1c222b;color:#a4b4c5;font-size:11px;line-height:1.35;padding:7px 14px;border-bottom:1px solid #333c49}
+.imon-puck-exact-frame{flex:1;min-height:0;width:100%;overflow:auto;display:flex;justify-content:flex-start;background:#30363d}
+.imon-puck-exact-frame iframe{flex:none!important;display:block;border:0!important;height:100%!important;background:#fff}
+.imon-puck-exact-frame[data-width=fluid] iframe{width:100%!important}
+.imon-puck-exact-frame[data-width="1440"] iframe{width:1440px!important}
+.imon-puck-exact-frame[data-width="768"] iframe{width:768px!important}
+.imon-puck-exact-frame[data-width="390"] iframe{width:390px!important}
+@media(min-width:820px){.imon-puck-exact-frame[data-width="768"],.imon-puck-exact-frame[data-width="390"]{justify-content:center}}
+@media(max-width:720px){.imon-puck-exact-view>header{align-items:flex-start}.imon-puck-exact-tools{gap:8px}.imon-puck-exact-size select{max-width:135px}}

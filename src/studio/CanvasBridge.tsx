@@ -46,7 +46,7 @@ export function CanvasBridge({ data }: { data: RecordData }) {
       if (interactive) return
       const target = (event.target as HTMLElement).closest<HTMLElement>('[data-studio-field]')
       const path = target?.dataset.studioField
-      if (!target || !path || target.dataset.studioEditable === 'false' || typeof readPath(data, path) !== 'string' || target.querySelector('input,button,img,video')) return
+      if (!target || !path || target.dataset.studioEditable === 'false' || typeof readPath(data, path) !== 'string' || target.matches('img,video,picture,svg') || target.querySelector('input,button,img,video')) return
       event.preventDefault(); event.stopPropagation(); finish()
       editor = target; target.contentEditable = 'true'; target.focus(); send({ type: 'edit-start' })
       const range = document.createRange(); range.selectNodeContents(target); window.getSelection()?.removeAllRanges(); window.getSelection()?.addRange(range)

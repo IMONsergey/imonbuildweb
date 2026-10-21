@@ -1,7 +1,7 @@
 import { chromium } from '@playwright/test'
 import {readFile,mkdir,writeFile} from 'node:fs/promises'
 import assert from 'node:assert/strict'
-const base='http://127.0.0.1:3120',suffix=Date.now().toString(36),path='/qa-puck-'+suffix
+const base=process.env.IMON_QA_BASE || 'http://127.0.0.1:3120',suffix=Date.now().toString(36),path='/qa-puck-'+suffix
 const creds=await readFile('.initial-admin','utf8')
 const email=creds.match(/^Email: (.+)$/m)?.[1],password=creds.match(/^Password: (.+)$/m)?.[1]
 await mkdir('audit/puck',{recursive:true})
@@ -51,9 +51,29 @@ try{
   await page.frameLocator('.imon-puck-exact-view iframe').getByRole('heading',{name:'Initial hero'}).waitFor({timeout:30000})
   assert.ok((await page.frameLocator('.imon-puck-exact-view iframe').locator('body').innerText()).includes('The original content must remain after editing.'))
   assert.equal((await guest.request.get(base+path)).status(),404,'Exact draft preview must stay private')
-  await page.getByRole('button',{name:'Вернуться к редактированию ×'}).click()
+  const inlineHero=page.frameLocator('.imon-puck-exact-view iframe').locator('[data-studio-field="heroTitle"]').first()
+  await inlineHero.dblclick()
+  const inlineText='Direct canvas edit '+suffix
+  const canvasSave=page.waitForResponse(response=>response.url().endsWith('/api/studio/document') && response.request().method()==='PUT' && response.request().postData()?.includes('"draft"'),{timeout:20000})
+  await inlineHero.evaluate((el,text)=>{
+    el.textContent=text
+    el.dispatchEvent(new Event('input',{bubbles:true}))
+    el.blur()
+  },inlineText)
+  assert.equal((await canvasSave).status(),200)
+  const canvasSaved=await getDoc()
+  assert.equal(canvasSaved.data.heroTitle,inlineText)
+  assert.equal((await guest.request.get(base+path)).status(),404,'Direct canvas editing must not publish drafts')
+  await page.getByRole('button',{name:'Анимации и ссылки'}).click()
+  assert.equal(await page.frameLocator('.imon-puck-exact-view iframe').locator('html').getAttribute('data-studio-editing'),'false')
+  await page.getByLabel('Ширина точного холста').selectOption('390')
+  assert.equal(Math.round(await exact.evaluate(el=>el.getBoundingClientRect().width)),390)
+  await page.getByRole('button',{name:'Редактировать текст'}).click()
+  assert.equal(await page.frameLocator('.imon-puck-exact-view iframe').locator('html').getAttribute('data-studio-editing'),'true')
+  await page.getByRole('button',{name:'К блокам ×'}).click()
   await exact.waitFor({state:'detached',timeout:15000})
-  output.push('Exact embedded site preview renders the private draft and returns to the block editor')
+  assert.equal(await page.locator('textarea[name="heroTitle"]:visible').first().inputValue(),inlineText,'Puck inspector must reflect the exact canvas edit')
+  output.push('Exact CMS canvas supports direct text editing, protected drafts, animation preview and responsive widths')
   const frame=page.frameLocator('iframe').first()
   const source=page.getByText('Текстовый раздел',{exact:true}).first().locator('xpath=..')
   console.log('BLOCK TO DRAG',await source.count(),await frame.locator('.puck-section').count())

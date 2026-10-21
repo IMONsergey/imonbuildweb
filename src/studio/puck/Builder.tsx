@@ -2,14 +2,25 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Puck } from '@puckeditor/core'
+import { Puck, createUsePuck, type PuckAction } from '@puckeditor/core'
 import { type StudioDocument, type DocumentSummary, type StudioCollection } from '../model'
 import { studioFetch } from '../useStudioDocument'
 import { makePuckConfig } from './config'
 import { comparePuckData, documentToPuck, puckToDocument, type PuckData } from './adapter'
+import { applyExactTextEdit } from './exactEdit'
 import type { PreviewAsset } from './Preview'
 
 type Status = 'saved' | 'editing' | 'saving' | 'published' | 'conflict' | 'error'
+type PuckDispatcher = (action: PuckAction) => void
+type ExactMode = 'edit' | 'preview'
+type ExactWidth = 'fluid' | '1440' | '768' | '390'
+
+const useBuilderPuck = createUsePuck()
+function DispatchConnector({ attach }: { attach: (dispatcher: PuckDispatcher | null) => void }) {
+  const dispatch = useBuilderPuck(state => state.dispatch)
+  useEffect(() => { attach(dispatch); return () => attach(null) }, [dispatch, attach])
+  return null
+}
 
 export function PuckBuilder({ initial, directory, initialAssets }: {
   initial: StudioDocument
@@ -24,6 +35,11 @@ export function PuckBuilder({ initial, directory, initialAssets }: {
   const [showDocuments, setShowDocuments] = useState(false)
   const [exactPreview, setExactPreview] = useState(false)
   const [exactLoading, setExactLoading] = useState(false)
+  const [exactMode, setExactMode] = useState<ExactMode>('edit')
+  const [exactWidth, setExactWidth] = useState<ExactWidth>('fluid')
+  const exactFrame = useRef<HTMLIFrameElement>(null)
+  const dispatcher = useRef<PuckDispatcher | null>(null)
+  const pendingExactEdit = useRef<{path: string; value: string} | null>(null)
   const [search, setSearch] = useState('')
   const [showCreate, setShowCreate] = useState(false)
   const [createCollection, setCreateCollection] = useState<StudioCollection>('pages')
@@ -43,6 +59,11 @@ export function PuckBuilder({ initial, directory, initialAssets }: {
     setAssets(previous => previous.some(a=>a.id===asset.id) ? previous : [asset, ...previous])),
     [initial, assets])
   useEffect(()=>()=>{ active.current=false;if(timer.current)clearTimeout(timer.current) },[])
+  const attachDispatch = useCallback((next: PuckDispatcher | null) => { dispatcher.current = next }, [])
+  const switchExactMode = useCallback((mode: ExactMode) => {
+    setExactMode(mode)
+    exactFrame.current?.contentWindow?.postMessage({ source: 'imon-studio', type: 'mode', preview: mode === 'preview' }, location.origin)
+  }, [])
   const path = initial.path
   const route = (record:DocumentSummary)=>'/studio/builder?collection='+record.collection+'&id='+record.id
   const sendSave = useCallback((data:PuckData, mode:'draft'|'publish'):Promise<boolean> => {
@@ -79,6 +100,31 @@ export function PuckBuilder({ initial, directory, initialAssets }: {
     pending.current=work
     return work
   },[initial.collection,initial.id])
+  useEffect(() => {
+    if (!exactPreview) return
+    const onMessage = (event: MessageEvent) => {
+      if (event.origin !== location.origin || event.source !== exactFrame.current?.contentWindow) return
+      const message = event.data
+      if (!message || typeof message !== 'object' || message.source !== 'imon-canvas') return
+      if (message.type === 'edit' && typeof message.path === 'string' && typeof message.value === 'string') {
+        pendingExactEdit.current = { path: message.path, value: message.value }
+        return
+      }
+      if (message.type !== 'edit-end' && message.type !== 'save') return
+      const edit = pendingExactEdit.current
+      pendingExactEdit.current = null
+      if (edit) {
+        const updated = applyExactTextEdit(currentData.current, initial.collection, edit.path, edit.value)
+        if (updated) dispatcher.current?.({ type: 'setData', data: updated, recordHistory: true })
+      }
+      if (message.type === 'save') {
+        if (timer.current) { clearTimeout(timer.current); timer.current = null }
+        void sendSave(currentData.current, 'draft')
+      }
+    }
+    window.addEventListener('message', onMessage)
+    return () => window.removeEventListener('message', onMessage)
+  }, [exactPreview, initial.collection, sendSave])
   const onChanged = useCallback((data:PuckData)=>{
     const previous=currentData.current
     currentData.current=data
@@ -105,9 +151,18 @@ export function PuckBuilder({ initial, directory, initialAssets }: {
     setExactLoading(true)
     try {
       const ok=await sendSave(currentData.current,'draft')
-      if (ok) setExactPreview(true)
+      if (ok) { setExactMode('edit'); setExactPreview(true) }
     } finally { setExactLoading(false) }
   }, [exactLoading, exactPreview, sendSave])
+  const navigateDocument = useCallback((event: React.MouseEvent<HTMLAnchorElement>, record: DocumentSummary) => {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+    if (!dirtyRef.current && status !== 'saving') return
+    event.preventDefault()
+    if (timer.current) { clearTimeout(timer.current); timer.current = null }
+    void sendSave(currentData.current, 'draft').then(ok => {
+      if (ok) router.push('/studio/builder?collection=' + record.collection + '&id=' + record.id)
+    })
+  }, [router, sendSave, status])
   const createDocument = useCallback(async (event: React.FormEvent) => {
     event.preventDefault()
     if (createBusy) return
@@ -155,7 +210,7 @@ export function PuckBuilder({ initial, directory, initialAssets }: {
     {showDocuments && <div className="imon-puck-documents" id="imon-puck-documents">
       <div className="imon-puck-document-search"><input aria-label="Найти страницу" placeholder="Поиск страниц, кейсов и журнала" value={search} onChange={event=>setSearch(event.target.value)}/><button type="button" onClick={()=>setShowDocuments(false)} aria-label="Закрыть список">×</button></div>
       {directory.filter(item=>(item.title+' '+item.path).toLowerCase().includes(search.toLowerCase())).map(item=>
-        <Link key={item.collection+item.id} href={route(item)}><span>{item.title}<small>{item.path}</small></span><span>{item.status==='published'?'●':'○'}</span></Link>)}
+        <Link key={item.collection+item.id} href={route(item)} onClick={event=>navigateDocument(event,item)}><span>{item.title}<small>{item.path}</small></span><span>{item.status==='published'?'●':'○'}</span></Link>)}
     </div>}
     {showCreate && <div className="imon-puck-create-backdrop" onMouseDown={event=>{if(event.target===event.currentTarget&&!createBusy)setShowCreate(false)}}>
       <form className="imon-puck-create" role="dialog" aria-modal="true" aria-label="Новый документ" onSubmit={event=>void createDocument(event)}>
@@ -194,10 +249,10 @@ export function PuckBuilder({ initial, directory, initialAssets }: {
         onChange={onChanged}
         onPublish={onPublish}
         overrides={{
-          headerActions: () => <button type="button" className="imon-puck-publish" disabled={status === 'saving'} onClick={() => {
+          headerActions: () => <><DispatchConnector attach={attachDispatch}/><button type="button" className="imon-puck-publish" disabled={status === 'saving'} onClick={() => {
             if (!window.confirm('Опубликовать страницу «' + String(documentRef.current.title || '') + '» на сайте?')) return
             void onPublish(currentData.current).catch(() => {})
-          }}>Опубликовать</button>,
+          }}>Опубликовать</button></>,
         }}
         headerTitle={String(initial.data.title || '')}
         headerPath={path}
@@ -209,8 +264,28 @@ export function PuckBuilder({ initial, directory, initialAssets }: {
         ]}
       />
       {exactPreview && <div className="imon-puck-exact-view" role="region" aria-label="Точная версия сайта">
-        <header><span>Настоящий сайт · {path} · черновик</span><button type="button" onClick={()=>setExactPreview(false)}>Вернуться к редактированию ×</button></header>
-        <iframe title="Точный предпросмотр страницы" src={'/studio/canvas?collection='+initial.collection+'&id='+initial.id+'&mode=preview'} sandbox="allow-scripts allow-same-origin allow-forms"/>
+        <header>
+          <span>Настоящий сайт · {path} · черновик</span>
+          <div className="imon-puck-exact-tools">
+            <div className="imon-puck-mode" role="group" aria-label="Режим холста">
+              <button type="button" aria-pressed={exactMode === 'edit'} className={exactMode === 'edit' ? 'selected' : ''} onClick={()=>switchExactMode('edit')}>Редактировать текст</button>
+              <button type="button" aria-pressed={exactMode === 'preview'} className={exactMode === 'preview' ? 'selected' : ''} onClick={()=>switchExactMode('preview')}>Анимации и ссылки</button>
+            </div>
+            <label className="imon-puck-exact-size">Экран <select aria-label="Ширина точного холста" value={exactWidth} onChange={event=>setExactWidth(event.target.value as ExactWidth)}>
+              <option value="fluid">По ширине окна</option>
+              <option value="1440">Desktop 1440</option>
+              <option value="768">Tablet 768</option>
+              <option value="390">Phone 390</option>
+            </select></label>
+            <button type="button" className="imon-puck-exact-return" onClick={()=>setExactPreview(false)}>К блокам ×</button>
+          </div>
+        </header>
+        <div className="imon-puck-exact-hint">{exactMode === 'edit' ? 'Двойной клик по тексту — изменить на настоящей странице. Cmd/Ctrl + S — сохранить черновик.' : 'Режим просмотра: работают переходы, ссылки и анимации.'}</div>
+        <div className="imon-puck-exact-frame" data-width={exactWidth}>
+          <iframe ref={exactFrame} title="Точный холст страницы" src={'/studio/canvas?collection='+initial.collection+'&id='+initial.id}
+            sandbox="allow-scripts allow-same-origin allow-forms"
+            onLoad={()=>exactFrame.current?.contentWindow?.postMessage({source:'imon-studio',type:'mode',preview:exactMode==='preview'},location.origin)}/>
+        </div>
       </div>}
     </div>
     <div className="imon-puck-preview-notice">Конструктор редактирует настоящие блоки CMS. Для точной проверки сетки и GSAP используйте «Точная страница» — это тот же рендерер, что на сайте.</div>
