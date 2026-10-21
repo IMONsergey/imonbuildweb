@@ -15,7 +15,7 @@ export default async function PuckBuilderPage({ searchParams }: {
   let session
   try { session = await studioSession(await headers()) }
   catch (cause) {
-    if (cause instanceof StudioError && cause.status === 401) redirect('/admin/login?redirect=%2Fstudio%2Fbuilder')
+    if (cause instanceof StudioError && cause.status === 401) redirect('/studio/login?next=%2Fstudio%2Fbuilder')
     throw cause
   }
   const query = await searchParams

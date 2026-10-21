@@ -9,7 +9,7 @@ const dirname = path.dirname(__filename)
 const nextConfig: NextConfig = {
   allowedDevOrigins: ['127.0.0.1', 'localhost'],
   async redirects() {
-    return [{ source: '/admin', destination: '/studio/builder', permanent: false, missing: [{ type: 'query', key: 'technical', value: '1' }] }]
+    return [{ source: '/admin', destination: '/studio', permanent: false, missing: [{ type: 'query', key: 'technical', value: '1' }] }]
   },
   async headers() {
     return [{ source: '/studio/:path*', headers: [

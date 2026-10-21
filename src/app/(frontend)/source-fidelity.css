@@ -37,3 +37,38 @@
 /* The original mobile service section is 967px tall at 390px. A 7px optical
    correction aligns all downstream editorial section boundaries. */
 @media(max-width:420px){.imon-home-services{margin-bottom:-7px}}
+
+/* October 21 source comparison: preserve original news artwork proportions and one-column mobile index. */
+.imon-news-image{aspect-ratio:auto;overflow:hidden}
+.imon-news-image img{width:100%;height:auto;object-fit:contain}
+@media(max-width:700px){
+  .imon-news-index{padding:11px 12px 95px}
+  .imon-news-grid{grid-template-columns:minmax(0,1fr);gap:64px}
+  .imon-news-category{text-align:right;height:29px;font-size:14px}
+  .imon-news-image{aspect-ratio:auto}
+  .imon-news-image img{width:100%;height:auto;object-fit:contain}
+  .imon-news-caption{padding-top:12px}
+  .imon-news-caption h2{font-size:16px;line-height:1.26;letter-spacing:-.028em;max-width:100%}
+}
+/* At 768px the purchased source uses the same restrained editorial title as the phone. */
+@media(min-width:701px) and (max-width:809px){
+  .inside-hero--news,.inside-hero--about,.inside-hero--work,.inside-hero--contact{min-height:340px;height:340px}
+  .inside-hero--work{min-height:365px;height:365px}
+  .inside-hero--news .inside-hero__bottom h1,
+  .inside-hero--about .inside-hero__bottom h1,
+  .inside-hero--work .inside-hero__bottom h1,
+  .inside-hero--contact .inside-hero__bottom h1{font-size:56px;line-height:1;letter-spacing:-.07em}
+  .inside-hero__top p{font-size:24px;line-height:1.1}
+}
+/* GAC editorial intro: source keeps metadata clear of the headline and a larger phone statement. */
+@media(min-width:810px){
+  .case-story--gac .case-hero>p{top:405px;font-size:30px;line-height:1.14;max-width:650px;letter-spacing:-.044em}
+}
+@media(max-width:700px){
+  .case-story--gac .case-hero{height:658px;min-height:658px}
+  .case-story--gac .case-hero>p{top:185px;left:12px;width:calc(100% - 24px);font-size:36px;font-weight:580;line-height:1.04;letter-spacing:-.05em}
+  .case-story--gac .case-meta{grid-template-columns:1fr;gap:20px;bottom:35px}
+  .case-story--gac .case-meta>div{gap:3px}
+  .case-story--gac .case-meta span{font-size:13px}
+  .case-story--gac .case-meta strong{font-size:15px}
+}

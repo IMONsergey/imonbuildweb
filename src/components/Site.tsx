@@ -86,7 +86,7 @@ export async function PageView({ page, isPreview = false }: { page: ContentPage;
   const innerMedia = mediaPath(field(page,'heroVideo',null),field(page,'heroVideoPath','')) || mediaPath(field(page,'heroImage',null),field(page,'heroImagePath',''))
   return <SiteShell isPreview={isPreview} design={(page as unknown as RecordData).studio} designData={page as unknown as RecordData}><section data-studio-node="hero" data-studio-path="hero" className={'inside-hero inside-hero--'+kind}><div className="inside-hero__top"><p {...fieldProps('intro')}>{visibleIntro}</p></div><div className="inside-hero__bottom"><h1 {...fieldProps('heroTitle')}>{sectionName}</h1><span>({kind==='work'?'2016—2026':kind==='news'?'Журнал':kind==='contact'?'Напишите нам':'I’MON'})</span></div></section>
     {innerMedia && <div className="inside-hero-media" {...fieldProps(field(page,'heroVideo',null) || field(page,'heroVideoPath','') ? 'heroVideo' : 'heroImage')}><Visual src={innerMedia} alt={title} priority/></div>}
-    {kind==='about' ? <AboutSections blocks={blocks}/> : kind==='news' ? <NewsSections blocks={blocks}/> : kind==='contact' ? <ContactSections blocks={blocks}/> : <Blocks blocks={blocks}/> }</SiteShell>
+    {kind==='about' ? <AboutSections blocks={blocks}/> : kind==='news' ? <NewsSections blocks={blocks}/> : kind==='contact' ? <ContactSections blocks={blocks}/> : <Blocks blocks={blocks} pageKind={kind}/> }</SiteShell>
 }
 
 export async function ProjectView({ project, isPreview = false }: { project: ContentProject; isPreview?: boolean }) {

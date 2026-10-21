@@ -13,6 +13,7 @@ export async function ArticleEditorial({ article, blocks }: { article: ContentAr
   const date = rawDate && Number.isFinite(Date.parse(rawDate)) ? new Date(rawDate).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}) : ''
   const body = 'body' in article ? article.body : undefined
   const last = blocks.length - 1, related = blocks[last]?.blockType === 'listing' && blocks[last].kind === 'articles' ? blocks[last] : undefined
+  const originalCoverPath = field<string>(article,'coverPath','')
   return <>
     <section className="imon-article-primary">
       <header className="imon-article-heading" data-studio-node="hero" data-studio-path="hero">
@@ -23,9 +24,11 @@ export async function ArticleEditorial({ article, blocks }: { article: ContentAr
         <aside className="imon-article-side">{cover && <div className="imon-article-cover" data-photo-in {...fieldProps('cover')}><img src={cover} alt={heading} loading="eager"/></div>}</aside>
         <div className="imon-article-copy">
           {body && <div className="imon-article-richtext" {...fieldProps('body')} data-studio-editable="false"><RichText data={body}/></div>}
-          {blocks.map((block,index) => index === last && related ? null : block.blockType === 'text'
+          {blocks.map((block,index) => index === last && related ? null
+            : block.blockType === 'visual' && !block.caption && !!originalCoverPath && block.src === originalCoverPath ? null
+            : block.blockType === 'text'
             ? <div className="imon-article-paragraph" data-animate={index > 0 ? 'reveal' : undefined} key={block.id || index} {...nodeProps(block,index,'sections')}>
-                {block.heading && <h2 {...fieldProps(`sections.${index}.heading`)}>{block.heading}</h2>}
+                {block.heading && <p className="imon-article-list-line" {...fieldProps(`sections.${index}.heading`)}>{block.heading}</p>}
                 {block.body && <p {...fieldProps(`sections.${index}.body`)}>{block.body}</p>}
               </div>
             : <Blocks key={block.id || index} blocks={[block]} base="sections" offset={index}/>)}

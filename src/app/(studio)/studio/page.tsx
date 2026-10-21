@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic'
 export default async function StudioPage() {
   let session
   try { session = await studioSession(await headers()) }
-  catch (error) { if (error instanceof StudioError && error.status === 401) redirect('/admin/login?redirect=%2Fstudio'); throw error }
+  catch (error) { if (error instanceof StudioError && error.status === 401) redirect('/studio/login?next=%2Fstudio'); throw error }
   const initial = await bootstrap(session.payload, session.user)
   return <Studio initial={initial}/>
 }

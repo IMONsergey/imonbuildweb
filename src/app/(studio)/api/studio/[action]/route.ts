@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { bootstrap, readDocument, saveDocument, studioSession } from '@/studio/server'
+import { bootstrap, readDocument, saveDocument, studioSession, serialize, revision } from '@/studio/server'
+import { cleanPreferences, type GlobalSlug } from '@/studio/preferences'
 import { collectionName, identifier, sanitizeDocument, StudioError } from '@/studio/schema'
 import { isRecord, type RecordData } from '@/studio/model'
 
@@ -43,6 +44,25 @@ export async function GET(request: NextRequest, context: Context) {
     const action = (await context.params).action
     const query = request.nextUrl.searchParams
     if (action === 'bootstrap') return json(await bootstrap(payload, user))
+    if (action === 'preferences') {
+      const [navigation, settings] = await Promise.all([
+        payload.findGlobal({ slug: 'navigation', user, overrideAccess: false, depth: 0 }),
+        payload.findGlobal({ slug: 'site-settings', user, overrideAccess: false, depth: 0 }),
+      ])
+      return json({
+        navigation: { data: navigation, revision: revision(navigation) },
+        settings: { data: settings, revision: revision(settings) },
+        canEdit: user.role === 'admin',
+      })
+    }
+    if (action === 'leads') {
+      if (user.role !== 'admin') throw new StudioError('Недостаточно прав для просмотра заявок', 403)
+      const result = await payload.find({ collection: 'leads', sort: '-createdAt', limit: 100,
+        depth: 0, user, overrideAccess: false })
+      return json({ leads: result.docs.map(item => ({ id: item.id, createdAt: item.createdAt,
+        name: item.name, email: item.email, company: item.company || '',
+        message: item.message, status: item.status || 'new' })), total: result.totalDocs })
+    }
     if (action === 'media') {
       const page = Math.max(1, Math.min(10000, Number(query.get('page')) || 1))
       const search = (query.get('q') || '').slice(0, 120)
@@ -64,6 +84,31 @@ export async function PUT(request: NextRequest, context: Context) {
     originGuard(request)
     const { payload, user } = await studioSession(request.headers)
     const input = await body(request), action = (await context.params).action
+    if (action === 'preferences') {
+      if (user.role !== 'admin') throw new StudioError('Только администратор может менять настройки', 403)
+      if (!['navigation', 'site-settings'].includes(String(input.slug))) throw new StudioError('Неизвестный раздел настроек', 400)
+      const slug = input.slug as GlobalSlug
+      if (typeof input.revision !== 'string' || !/^[a-f0-9]{64}$/.test(input.revision))
+        throw new StudioError('Обновите настройки перед сохранением', 409)
+      let clean
+      try { clean = cleanPreferences(slug, input.data) }
+      catch (error) { throw new StudioError(error instanceof Error ? error.message : 'Некорректные настройки', 422) }
+      return json(await serialize('preferences:' + slug, async () => {
+        const current = await payload.findGlobal({ slug, user, overrideAccess: false, depth: 0 })
+        if (revision(current) !== input.revision) throw new StudioError('Настройки были изменены в другой вкладке. Обновите страницу перед сохранением.', 409)
+        await payload.updateGlobal({ slug, data: clean as never, user, overrideAccess: false })
+        const updated = await payload.findGlobal({ slug, user, overrideAccess: false, depth: 0 })
+        return { data: updated, revision: revision(updated) }
+      }))
+    }
+    if (action === 'leads') {
+      if (user.role !== 'admin') throw new StudioError('Недостаточно прав для работы с заявками', 403)
+      const id = identifier(input.id)
+      if (!['new', 'processing', 'done'].includes(String(input.status)))
+        throw new StudioError('Неизвестный статус заявки', 422)
+      const updated = await payload.update({ collection: 'leads', id, data: { status: input.status as 'new' | 'processing' | 'done' }, user, overrideAccess: false })
+      return json({ id: updated.id, status: updated.status })
+    }
     const collection = collectionName(input.collection), id = identifier(input.id)
     if (typeof input.revision !== 'string' || !/^[a-f0-9]{64}$/.test(input.revision)) throw new StudioError('Загрузите актуальную версию документа', 409)
     if (action === 'document') {

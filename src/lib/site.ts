@@ -46,6 +46,7 @@ export function originalPage(path: string): OriginalPage | undefined {
 export const originalProjects = originals.filter(page => page.kind === 'case')
 export const originalWork = originalProjects.filter(page => page.path.startsWith('/work/'))
 export const originalArticles = originals.filter(page => page.kind === 'article')
+const sourceArticlePosition = new Map(originalArticles.map((article, index) => [article.path.split('/').at(-1), index]))
 
 async function cms(): Promise<Payload | null> {
   try {
@@ -127,7 +128,13 @@ export async function siteArticles(): Promise<ContentArticle[]> {
     collection: 'articles', limit: 100, depth: 2, draft: preview, sort: '-publishedAt',
     where: preview ? {} : { _status: { equals: 'published' } },
   })
-  return result.docs
+  return result.docs.sort((a, b) => {
+    const first = sourceArticlePosition.get(a.slug), second = sourceArticlePosition.get(b.slug)
+    if (first !== undefined && second !== undefined) return first - second
+    if (first !== undefined) return -1
+    if (second !== undefined) return 1
+    return Date.parse(b.publishedAt || '') - Date.parse(a.publishedAt || '') || 0
+  })
 }
 
 export async function siteArticle(slug: string, urlToken?: string): Promise<ContentArticle | undefined> {
