@@ -122,6 +122,7 @@
 /* Askona: a continuous image-led canvas, isolated from the other case layouts. */
 .site-shell--askona {background:#111;color:#f5f5f5;--askona-gutter:clamp(20px,5.35vw,86px);}
 .site-shell--askona .site-header {height:70px;padding:0 var(--askona-gutter);grid-template-columns:1fr auto auto;gap:36px;border:0;background:transparent;color:#fff;}
+.site-shell--askona .mobile-nav {background:#111;color:#f5f5f5;--rule:#3d3d3d;}
 .site-shell--askona .header-clocks {display:none;}
 .site-shell--askona .wordmark {font-size:21px;}
 .site-shell--askona .desktop-nav,.site-shell--askona .header-contact {font-size:11px;}
@@ -140,8 +141,8 @@
 .askona-pause p {font-size:clamp(18px,2.1vw,29px);line-height:1.25;letter-spacing:-.025em;}
 .askona-diptych {display:grid;grid-template-columns:1.4fr 1fr;gap:12px;}
 .askona-detail {position:relative;overflow:hidden;border-radius:8px;aspect-ratio:.91;background:#03202a;}
-.askona-detail--mission img {position:absolute;width:245%;left:-6%;top:-67%;}
-.askona-detail--business img {position:absolute;width:225%;left:-121%;top:0;}
+.askona-detail--mission img {position:absolute;width:245%;left:-6%;top:-130%;}
+.askona-detail--business img {position:absolute;width:225%;left:-121%;top:-62%;}
 .askona-pause--small {padding:26px 0 30px;}
 .askona-pause--small p {font-size:clamp(14px,1.6vw,21px);line-height:1.45;}
 .askona-timeline {overflow:hidden;border-radius:8px;background:#071c24;}

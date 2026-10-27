@@ -80,15 +80,38 @@ test('Архив не попадает в портфолио и публичны
   expect(data.docs.map((doc: { sourcePath: string }) => doc.sourcePath).sort()).toEqual(['/cases/askona-life-group', '/cases/page'])
 })
 
-test('Подписи кейса видимы и отделены от alt', async ({ page }) => {
-  await page.goto('/cases/askona-life-group')
-  const first = page.locator('.case-story-visual').first()
-  await expect(first.locator('figcaption')).toContainText('корпоративный сайт группы')
-  await expect(first.locator('img')).toHaveAttribute('alt', 'Главная страница Askona Life Group на ноутбуке')
+test('GAC: подпись видима и отделена от alt', async ({ page }) => {
+  await page.goto('/cases/page')
+  const first = page.locator('.case-story-visual').filter({ has: page.locator('img') }).first()
+  await expect(first.locator('figcaption')).toBeVisible()
+  await expect(first.locator('img')).toHaveAttribute('alt', /.+/)
   expect(await first.locator('figcaption').textContent()).not.toBe(await first.locator('img').getAttribute('alt'))
   await expect(page.locator('.case-related-link')).toHaveCount(1)
-  await expect(page.locator('.case-related-link')).toHaveAttribute('href', '/cases/page')
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+})
+
+test('Askona: медиа открывает страницу, сцены и переход сохраняют порядок', async ({ page, isMobile }) => {
+  await page.goto('/cases/askona-life-group')
+  const opening = page.locator('.askona-opening')
+  await expect(opening.locator('img')).toHaveAttribute('src', '/media/XVtclO78Zy9cgdbTgJCOm4EBCU.webp')
+  const hero = await opening.boundingBox()
+  expect(hero!.y).toBeLessThan(100)
+  const title = await page.locator('#askona-title').boundingBox()
+  expect(title!.y).toBeGreaterThanOrEqual(hero!.y + hero!.height)
+  await expect(page.locator('.askona-diptych figure')).toHaveCount(2)
+  await expect(page.locator('.askona-timeline img')).toHaveAttribute('src', '/media/eoFAWJMd4l5EgteSz5TVb4QTaQ.webp')
+  await expect(page.locator('.askona-history-detail__hand')).toHaveAttribute('src', '/media/WJ03F8jDjA8VMtymeGc4BU3ADo.webp')
+  await expect(page.getByRole('heading', { name: 'Задача', exact: true })).toBeVisible()
+  if (isMobile) {
+    await page.getByRole('button', { name: 'Открыть меню' }).click()
+    const nav = page.getByRole('navigation', { name: 'Мобильная навигация' })
+    await expect(nav).toBeVisible()
+    await expect(page.locator('.mobile-nav')).toHaveCSS('background-color', 'rgb(17, 17, 17)')
+    await expect(nav.getByRole('link').first()).toHaveCSS('color', 'rgb(245, 245, 245)')
+    await page.getByRole('button', { name: 'Закрыть меню' }).click()
+  }
+  await page.locator('.askona-end a').click()
+  await expect(page).toHaveURL(/\/cases\/page$/)
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('GAC M8')
 })
 
 for (const [title, route] of [['Askona Life Group', '/cases/askona-life-group'], ['GAC M8', '/cases/page']]) {
@@ -102,14 +125,20 @@ for (const [title, route] of [['Askona Life Group', '/cases/askona-life-group'],
       expect(device.coarse).toBe(true)
       expect(device.width).toBe(390)
     }
-    const captions = page.locator('.case-story-content figcaption')
-    expect(await captions.count()).toBeGreaterThan(10)
-    for (const img of await page.locator('.case-story-content img').all()) {
+    const isAskona = route.endsWith('askona-life-group')
+    if (!isAskona) expect(await page.locator('.case-story-content figcaption').count()).toBeGreaterThan(10)
+    const images = page.locator(isAskona ? '.askona-editorial img' : '.case-story-content img')
+    expect(await images.count()).toBeGreaterThan(isAskona ? 5 : 10)
+    for (const img of await images.all()) {
       await img.scrollIntoViewIfNeeded()
       await expect(img).toBeVisible()
       await expect.poll(() => img.evaluate((node: HTMLImageElement) => node.complete && node.naturalWidth > 0)).toBe(true)
     }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    if (isAskona) {
+      await expect(page.locator('.askona-end a')).toHaveAttribute('href', '/cases/page')
+      return
+    }
     const heading = await page.locator('.case-hero h1').boundingBox()
     const summary = await page.locator('.case-hero > p').boundingBox()
     expect(heading!.y + heading!.height).toBeLessThanOrEqual(summary!.y)
