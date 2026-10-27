@@ -12,6 +12,8 @@ import { NewsSections } from './NewsSections'
 import { ContactSections } from './ContactSections'
 import { ArticleEditorial } from './ArticleEditorial'
 import { CaseBlocks } from './CaseBlocks'
+import { AskonaCase } from './AskonaCase'
+import { usesDefaultAskonaPresentation } from '@/lib/askonaPresentation'
 import { SiteMotion } from './SiteMotion'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { defaultBlocks, type DisplayBlock } from '@/lib/defaultBlocks'
@@ -20,12 +22,12 @@ import {
   field, mediaPath, entityCover, originalPage, siteArticles, siteProjects, siteSettings,
 } from '@/lib/site'
 
-export async function SiteShell({ children, overlay = false, isPreview = false, footerHeading, design, designData, footerBlock }: { children: ReactNode; overlay?: boolean; isPreview?: boolean; footerHeading?: string; design?: unknown; designData?: RecordData; footerBlock?: { block: DisplayBlock; index: number } }) {
+export async function SiteShell({ children, overlay = false, isPreview = false, footerHeading, design, designData, footerBlock, caseTheme = false }: { caseTheme?: boolean; children: ReactNode; overlay?: boolean; isPreview?: boolean; footerHeading?: string; design?: unknown; designData?: RecordData; footerBlock?: { block: DisplayBlock; index: number } }) {
   const { settings, links, cta } = await siteSettings()
-  return <div className="site-shell">
+  return <div className={caseTheme ? "site-shell site-shell--askona" : "site-shell"}>
     <SiteHeader overlay={overlay} links={links} ctaText={cta.text} ctaHref={cta.href} />
     <style id="studio-design-overrides">{designCSS(design, designData)}</style><main id="main-content" data-studio-node="root" data-studio-path="">{children}</main><SiteMotion/><PreviewIndicator forceVisible={isPreview} />
-    <footer className="site-footer">
+    {!caseTheme && <footer className="site-footer">
       <div className="footer-top">
         <div className="footer-menu"><span>Меню</span><nav aria-label="Нижняя навигация">
           {links.map(link=><Link key={link.href} href={link.href}>{link.label}</Link>)}
@@ -41,7 +43,7 @@ export async function SiteShell({ children, overlay = false, isPreview = false, 
         <div><Link href="/privacy-policy">Конфиденциальность</Link><Link href="/term-condition">Условия использования</Link></div>
         <div className="footer-contact"><a href={'mailto:'+settings.email}>{settings.email}</a><a href={settings.telegram || 'https://t.me/imonagency'} target="_blank" rel="noopener noreferrer">Telegram <ArrowUpRight/></a></div>
       </div>
-    </footer>
+    </footer>}
   </div>
 }
 
@@ -95,6 +97,7 @@ export async function ProjectView({ project, isPreview = false }: { project: Con
   const cover=entityCover(project)
   const blocks=normalizedBlocks(project)
   const sourcePath=field<string>(project,'sourcePath',field<string>(project,'path',''))
+  if (usesDefaultAskonaPresentation(project as unknown as Record<string, unknown>, blocks)) return <SiteShell overlay caseTheme isPreview={isPreview} design={(project as unknown as RecordData).studio} designData={project as unknown as RecordData}><AskonaCase project={project}/></SiteShell>
   const isSourceCase=sourcePath.startsWith('/cases/')
   const caseClass=isSourceCase?'case-story '+(sourcePath==='/cases/page'?'case-story--gac':'case-story--askona'):''
   return <SiteShell isPreview={isPreview} design={(project as unknown as RecordData).studio} designData={project as unknown as RecordData}><div className={caseClass}>
