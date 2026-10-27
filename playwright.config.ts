@@ -13,7 +13,9 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   workers: 1,
   reporter: 'list',
-  use: { baseURL, trace: 'retain-on-failure' },
+  use: { baseURL, trace: 'retain-on-failure',
+    launchOptions: process.env.IMON_CHROMIUM_EXECUTABLE_PATH ? { executablePath: process.env.IMON_CHROMIUM_EXECUTABLE_PATH } : undefined,
+  },
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'], channel: 'chrome' } },
     { name: 'mobile', use: { ...devices['iPhone 13'], browserName: 'chromium', channel: 'chrome' } },

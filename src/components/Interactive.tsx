@@ -100,7 +100,7 @@ export function FilteredGrid({ items, mode = 'work', showFilters = true }: { ite
   const filtered = active === 'Все' ? items : items.filter(item => mode === 'journal'
     ? item.category === active
     : active === 'Брендинг' ? /brand/i.test(item.category)
-    : active === 'Digital' ? /web|digital|develop/i.test(item.category)
+    : active === 'Digital' ? /web|digital|develop|веб|разработ/i.test(item.category)
     : active === 'Стратегия' ? /strategy|стратег/i.test(item.category)
     : /product|art|ux|ui/i.test(item.category))
   return <section className={'filtered-section filtered-section--' + mode}>

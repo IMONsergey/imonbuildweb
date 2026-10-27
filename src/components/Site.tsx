@@ -102,8 +102,8 @@ export async function ProjectView({ project, isPreview = false }: { project: Con
       <div className="case-hero__caption"><span>Кейс / {field(project,'category','Digital')}</span><span>{field(project,'year','')}</span></div>
       <h1 {...fieldProps('title')}>{title}</h1><p {...fieldProps('summary')}>{summary}</p>
       <div className="case-meta">
-        <div><span>Клиент</span><strong>{field(project,'client',title)}</strong></div>
-        <div><span>Год</span><strong>{field(project,'year','')}</strong></div>
+        <div><span>{sourcePath === '/cases/page' ? 'Проект' : 'Клиент'}</span><strong>{field(project,'client',title)}</strong></div>
+        {field(project,'year','') && <div><span>Год</span><strong>{field(project,'year','')}</strong></div>}
         <div><span>Работы</span><strong>{field(project,'category','Бренд, UX/UI, Digital')}</strong></div>
       </div>
     </section>

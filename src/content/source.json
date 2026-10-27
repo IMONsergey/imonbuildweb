@@ -256,7 +256,7 @@
     "slug": "cases/page",
     "kind": "case",
     "title": "GAC M8",
-    "intro": "Цифровая презентация представительского минивэна для выхода GAC Motors на глобальный рынок.",
+    "intro": "От знакомства с автомобилем к выбору комплектации.",
     "texts": [
       "GAC M8",
       "Цифровая презентация представительского минивэна для выхода GAC Motors на глобальный рынок.",
@@ -368,14 +368,15 @@
       "/media/u7qG5WWLT8HGvYbjMpD05zOAlI.mp4",
       "/media/bLDYriJYeGlZpw6EU1Mj9IA5MI.mp4"
     ],
-    "cover": "/media/jyArCXURn9Svez9LQJiv5mZSY.png"
+    "cover": "/media/jyArCXURn9Svez9LQJiv5mZSY.png",
+    "category": "UX/UI, веб-дизайн, разработка"
   },
   {
     "path": "/cases/askona-life-group",
     "slug": "cases/askona-life-group",
     "kind": "case",
     "title": "Askona Life Group",
-    "intro": "Корпоративная платформа, которая объединяет бизнесы Askona Life Group в единую цифровую экосистему.",
+    "intro": "Разные направления бизнеса в одной цифровой системе.",
     "texts": [
       "Askona Life Group",
       "Корпоративная платформа, которая объединяет бизнесы Askona Life Group в единую цифровую экосистему.",
@@ -445,7 +446,8 @@
       "/media/OBtxIxUb9sGFrQxUXp9feCUl5I.png"
     ],
     "videos": [],
-    "cover": "/media/do1iW5RWfxAilRvHDrvkg01gs.webp"
+    "cover": "/media/do1iW5RWfxAilRvHDrvkg01gs.webp",
+    "category": "Аналитика, контент, UX/UI, разработка"
   },
   {
     "path": "/work/limbo",

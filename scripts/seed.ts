@@ -45,19 +45,21 @@ for (const page of pages) {
   }
   if (page.kind==='case') {
     const slug=page.path.split('/').pop()!
+    const portfolio = ['/cases/askona-life-group', '/cases/page'].includes(page.path)
     if(await exists('projects','sourcePath',page.path)) { console.log('Keep existing case:', page.path); continue }
     await payload.create({
       collection:'projects', overrideAccess:true,
       data: {
         slug, sourcePath:page.path, title:page.title, summary:page.intro,
-        client: page.path.startsWith('/cases/askona')?'Askona Life Group':page.path==='/cases/page'||page.path==='/work/limbo'?'GAC Motors':undefined,
+        client: page.path.startsWith('/cases/askona')?'Askona Life Group':page.path==='/cases/page'?'GAC M8':undefined,
         year:page.year || '',
         category:page.category || 'Brand, Digital',
-        order:page.path.startsWith('/cases/') ? 100+inserted : inserted,
+        portfolioStatus: portfolio ? 'portfolio' : 'archive',
+        order:page.path==='/cases/askona-life-group' ? 0 : page.path==='/cases/page' ? 1 : 100+inserted,
         coverPath:page.cover || page.images[0] || '',
         sections:blocks as never,
         seoDescription:page.intro,
-        _status:'published',
+        _status:portfolio ? 'published' : 'draft',
       },
     })
     inserted++

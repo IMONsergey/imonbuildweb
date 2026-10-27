@@ -1,4 +1,5 @@
 import type { OriginalPage } from './site'
+import caseStories from '@/content/caseStories.json'
 
 export type DisplayBlock = {
   id?: string; blockName?: string
@@ -10,6 +11,7 @@ export type DisplayBlock = {
   quote?: string
   attribution?: string
   src?: string
+  alt?: string
   caption?: string
   display?: string
   items?: Array<Record<string, unknown>>
@@ -77,6 +79,8 @@ export function defaultBlocks(page: OriginalPage): DisplayBlock[] {
   ]
   if (page.kind === 'legal') return [{ blockType: 'text', heading: page.path === '/privacy-policy' ? 'Обработка персональных данных' : 'Условия использования', body: page.texts[0], layout: 'narrow' }]
   if (page.kind === 'case') {
+    const story = (caseStories as Record<string, { blocks: DisplayBlock[] }>)[page.path]
+    if (story) return structuredClone(story.blocks)
     const blocks: DisplayBlock[] = []
     const start = page.path.startsWith('/cases/') ? 7 : 8
     if (page.path.startsWith('/cases/')) {

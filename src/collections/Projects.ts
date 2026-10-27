@@ -1,4 +1,4 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig, AccessResult } from 'payload'
 import { contentBlocks } from '@/blocks/content'
 
 export const Projects: CollectionConfig = {
@@ -10,7 +10,7 @@ export const Projects: CollectionConfig = {
   versions: { drafts: true, maxPerDoc: 40 },
   access: {
     readVersions: ({ req }) => !!req.user,
-    read: ({ req }) => req.user ? true : { _status: { equals: 'published' } },
+    read: ({ req }): AccessResult => req.user ? true : { and: [{ _status: { equals: 'published' } }, { portfolioStatus: { equals: 'portfolio' } }] },
     create: ({ req }) => !!req.user, update: ({ req }) => !!req.user,
     delete: ({ req }) => req.user?.role === 'admin',
   },
@@ -23,7 +23,11 @@ export const Projects: CollectionConfig = {
     { name: 'client', type: 'text' },
     { name: 'year', type: 'text' },
     { name: 'category', type: 'text' },
-    { name: 'order', type: 'number', defaultValue: 0 },
+    { name: 'portfolioStatus', label: 'Размещение', type: 'select', required: true, defaultValue: 'archive', options: [
+      { label: 'Портфолио агентства', value: 'portfolio' },
+      { label: 'Архив / демонстрационные материалы', value: 'archive' },
+    ], admin: { description: 'В публичный каталог попадают только опубликованные записи портфолио. Архив доступен редактору.' } },
+    { name: 'order', label: 'Порядок в портфолио', type: 'number', defaultValue: 0 },
     { name: 'cover', type: 'upload', relationTo: 'media' },
     { name: 'coverPath', label: 'Исходная обложка', type: 'text' },
     { name: 'sections', type: 'blocks', blocks: contentBlocks },

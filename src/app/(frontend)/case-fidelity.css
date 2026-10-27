@@ -1,4 +1,4 @@
-/* Original editorial case narratives, with every media item in source order. */
+/* Editorial case narratives preserve the original grid and large media. */
 .case-story {--case-gutter:16px;}
 .case-story .case-hero {height:600px;min-height:600px;padding:66px var(--case-gutter) 0;position:relative;display:block;}
 .case-story--askona .case-hero {height:712px;min-height:712px;}
@@ -79,7 +79,7 @@
  .case-story-visual--portrait {width:min(60%,250px);}
  .case-story-gallery {gap:10px;margin:10px 12px;}
  .case-story-gallery[data-count="3"] {grid-template-columns:repeat(2,minmax(0,1fr));}
- .case-story-gallery[data-count="3"]>.case-media:nth-child(3) {grid-column:1/-1;}
+ .case-story-gallery[data-count="3"]>figure:nth-child(3) {grid-column:1/-1;width:calc(50% - 5px);justify-self:center;}
  .case-story-gallery[data-count="2"] {grid-template-columns:repeat(2,minmax(0,1fr));}
  .case-story-copy+.case-story-visual,.case-story-copy+.case-story-gallery {margin-top:45px;}
  .case-story-visual+.case-story-copy,.case-story-gallery+.case-story-copy {margin-top:75px;}
@@ -109,4 +109,12 @@
   .case-story-visual--overlapLeft{width:42%;margin-left:12px;margin-top:-260px}
   .case-story-visual--portraitOffset{width:45%;margin-right:12px;margin-top:-15px}
   .case-story--askona .case-story-visual--portrait{width:45%;margin-right:12px}
+}
+
+/* Captions explain the design; alt text describes the image independently. */
+.case-story-gallery>figure {margin:0;min-width:0;}
+.case-story-content figcaption {font-size:14px;line-height:1.45;color:#666;max-width:650px;padding:12px 0 20px;}
+@media(max-width:809px){
+ .case-story-content figcaption {font-size:12px;padding:9px 0 16px;}
+ .case-story-gallery[data-count="2"] {grid-template-columns:1fr;}
 }

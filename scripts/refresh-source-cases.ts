@@ -20,13 +20,13 @@ for (const [route,story] of Object.entries(stories as Record<string,Story>)) {
   const texts = raw?.texts || []
   const next = (label:string) => texts[texts.indexOf(label)+1]
   const year = /^\d{4}$/.test(next('Год')||'') ? next('Год') : original.year
-  const category = next('Работы') || original.category
+  const category = raw?.category || original.category
   const blocks = [...story.blocks]
   if (route === '/cases/askona-life-group') {
     const duplicate = blocks.findIndex(block => block.blockType==='visual' && typeof block.src==='string' && block.src.includes('FFN0jZcyJMA4Z1LOoQu3bTkaXuM.jpg'))
     if (duplicate !== -1) blocks.splice(duplicate,1)
   }
-  blocks.push({blockType:'listing',kind:'projects',heading:'Другие проекты',limit:2})
+  if (!blocks.some(block => block.blockType === 'listing')) blocks.push({blockType:'listing',kind:'projects',heading:'Другие проекты',limit:2})
   const withoutIDs = (value:unknown):unknown => Array.isArray(value) ? value.map(withoutIDs) : value && typeof value==='object' ? Object.fromEntries(Object.entries(value).filter(([key,value])=>key!=='id'&&key!=='blockName'&&value!==null&&value!==undefined).map(([key,value])=>[key,withoutIDs(value)])) : value
   if (JSON.stringify(withoutIDs(current)) === JSON.stringify(withoutIDs(blocks)) && original.year === year && original.category === category) {
     console.log('Keeping migrated case:',route); continue

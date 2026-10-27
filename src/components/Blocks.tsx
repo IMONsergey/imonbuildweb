@@ -45,7 +45,7 @@ function CardList({ type, items, showAll = false }: { type: 'projects' | 'articl
   return <><FilteredGrid items={formatted} mode={type==='articles'?'journal':'work'} showFilters={showAll} />{!showAll && <div className="section-more"><Link href={type==='projects'?'/work':'/news'}>Смотреть все {type==='projects'?'проекты':'публикации'} <span><ArrowUpRight/></span></Link></div>}</>
 }
 
-export async function Blocks({ blocks, base = 'blocks', offset = 0, pageKind = '' }: { blocks: DisplayBlock[]; base?: string; offset?: number; pageKind?: string }) {
+export async function Blocks({ blocks, base = 'blocks', offset = 0 }: { blocks: DisplayBlock[]; base?: string; offset?: number; pageKind?: string }) {
   const sections: ReactNode[]=[]
   for(let i=0;i<blocks.length;i++) {
     const block=blocks[i]
@@ -74,9 +74,7 @@ export async function Blocks({ blocks, base = 'blocks', offset = 0, pageKind = '
     else if(block.blockType==='listing') {
       const kind=block.kind==='articles'?'articles':'projects'
       const all=kind==='articles'?await siteArticles():await siteProjects()
-      const visible = kind === 'projects' && pageKind === 'work'
-        ? all.filter(project => field(project,'sourcePath',field(project,'path','')).startsWith('/work/'))
-        : all
+      const visible = all
       sections.push(<section key={i} {...nodeProps(block, i + offset, base)} className="section listing-section"><div className="section-heading">{eyebrow(block.eyebrow)}{block.heading && <h2 {...fieldProps(`${base}.${i + offset}.heading`)}>{block.heading}</h2>}</div><CardList type={kind} items={visible.slice(0,block.limit||visible.length)} showAll={visible.length <= (block.limit||visible.length)}/></section>)
     } else if(block.blockType==='contact') sections.push(<section key={i} {...nodeProps(block, i + offset, base)} className="section contact-section"><div className="section-heading"><h2>{block.heading||'Обсудим задачу'}</h2>{block.intro && <p>{block.intro}</p>}</div>{block.showForm!==false && <LeadForm />}</section>)
     else if(block.blockType==='cta') sections.push(<section key={i} {...nodeProps(block, i + offset, base)} className="section cta-section"><h2 {...fieldProps(`${base}.${i + offset}.heading`)}>{block.heading}</h2><Link href={block.href||'/contact'}>{block.buttonText||'Обсудить задачу'} <span><ArrowUpRight/></span></Link></section>)
