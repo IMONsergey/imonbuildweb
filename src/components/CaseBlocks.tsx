@@ -22,13 +22,17 @@ export async function CaseBlocks({ blocks, currentPath = '' }: { blocks: Display
     </section>)
     else if(block.blockType==='visual') {
       const path=src(row)
-      nodes.push(<section key={index} {...nodeProps(block,index,'sections')} className={'case-story-visual case-story-visual--'+(block.display||'full')}>
-        <CaseMedia src={path} alt={block.caption || 'Визуальный материал проекта'} />
-      </section>)
+      nodes.push(<figure key={index} {...nodeProps(block,index,'sections')} className={'case-story-visual case-story-visual--'+(block.display||'full')}>
+        <CaseMedia src={path} alt={block.alt || block.caption || 'Визуальный материал проекта'} />
+        {block.caption && <figcaption {...fieldProps(`sections.${index}.caption`)}>{block.caption}</figcaption>}
+      </figure>)
     } else if(block.blockType==='gallery') {
       const items=(Array.isArray(block.items)?block.items:[]) as Row[]
       nodes.push(<section key={index} {...nodeProps(block,index,'sections')} className="case-story-gallery" data-count={items.length}>
-        {items.map((item,i)=><CaseMedia key={i} src={src(item)} alt={text(item,'caption')||'Деталь проекта '+(i+1)} />)}
+        {items.map((item,i)=><figure key={i}>
+          <CaseMedia src={src(item)} alt={text(item,'alt')||text(item,'caption')||'Деталь проекта '+(i+1)} />
+          {text(item,'caption') && <figcaption {...fieldProps(`sections.${index}.items.${i}.caption`)}>{text(item,'caption')}</figcaption>}
+        </figure>)}
       </section>)
     } else if (block.blockType==='cards') {
       nodes.push(<section key={index} {...nodeProps(block,index,'sections')} className={'case-story-cards '+((block.items||[]).length>3?'case-story-cards--palette':'')}>

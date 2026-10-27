@@ -44,7 +44,7 @@ export function originalPage(path: string): OriginalPage | undefined {
   return originals.find(page => page.path === path)
 }
 export const originalProjects = originals.filter(page => page.kind === 'case')
-export const originalWork = originalProjects.filter(page => page.path.startsWith('/work/'))
+export const originalWork = originalProjects.filter(page => ['/cases/askona-life-group', '/cases/page'].includes(page.path)).sort((a, b) => a.path.localeCompare(b.path))
 export const originalArticles = originals.filter(page => page.kind === 'article')
 const sourceArticlePosition = new Map(originalArticles.map((article, index) => [article.path.split('/').at(-1), index]))
 
@@ -102,20 +102,20 @@ export async function siteProjects(): Promise<ContentProject[]> {
   const preview = await previewAuthorized('/work')
   const result = await payload.find({
     collection: 'projects', limit: 100, depth: 2, draft: preview, sort: 'order',
-    where: preview ? {} : { _status: { equals: 'published' } },
+    where: preview ? {} : { and: [{ _status: { equals: 'published' } }, { portfolioStatus: { equals: 'portfolio' } }] },
   })
   return result.docs
 }
 
 export async function siteProject(path: string, urlToken?: string): Promise<ContentProject | undefined> {
   const payload = await cms()
-  if (!payload) return originalPage(path)
+  if (!payload) return originalWork.find(page => page.path === path)
   const preview = await previewAuthorized(path, urlToken)
   const result = await payload.find({
     collection: 'projects', limit: 1, depth: 2, draft: preview,
     where: preview
       ? { sourcePath: { equals: path } }
-      : { and: [{ sourcePath: { equals: path } }, { _status: { equals: 'published' } }] },
+      : { and: [{ sourcePath: { equals: path } }, { _status: { equals: 'published' } }, { portfolioStatus: { equals: 'portfolio' } }] },
   })
   return result.docs[0]
 }

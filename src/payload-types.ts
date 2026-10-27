@@ -241,6 +241,7 @@ export interface Page {
         | {
             media?: (number | null) | Media;
             src?: string | null;
+            alt?: string | null;
             caption?: string | null;
             display?:
               ('wide' | 'full' | 'portrait' | 'contain' | 'overlapRight' | 'overlapLeft' | 'portraitOffset') | null;
@@ -254,6 +255,7 @@ export interface Page {
               | {
                   media?: (number | null) | Media;
                   src?: string | null;
+                  alt?: string | null;
                   caption?: string | null;
                   id?: string | null;
                 }[]
@@ -427,6 +429,10 @@ export interface Project {
   client?: string | null;
   year?: string | null;
   category?: string | null;
+  /**
+   * В публичный каталог попадают только опубликованные записи портфолио. Архив доступен редактору.
+   */
+  portfolioStatus: 'portfolio' | 'archive';
   order?: number | null;
   cover?: (number | null) | Media;
   coverPath?: string | null;
@@ -446,6 +452,7 @@ export interface Project {
         | {
             media?: (number | null) | Media;
             src?: string | null;
+            alt?: string | null;
             caption?: string | null;
             display?:
               ('wide' | 'full' | 'portrait' | 'contain' | 'overlapRight' | 'overlapLeft' | 'portraitOffset') | null;
@@ -459,6 +466,7 @@ export interface Project {
               | {
                   media?: (number | null) | Media;
                   src?: string | null;
+                  alt?: string | null;
                   caption?: string | null;
                   id?: string | null;
                 }[]
@@ -660,6 +668,7 @@ export interface Article {
         | {
             media?: (number | null) | Media;
             src?: string | null;
+            alt?: string | null;
             caption?: string | null;
             display?:
               ('wide' | 'full' | 'portrait' | 'contain' | 'overlapRight' | 'overlapLeft' | 'portraitOffset') | null;
@@ -673,6 +682,7 @@ export interface Article {
               | {
                   media?: (number | null) | Media;
                   src?: string | null;
+                  alt?: string | null;
                   caption?: string | null;
                   id?: string | null;
                 }[]
@@ -1031,6 +1041,7 @@ export interface PagesSelect<T extends boolean = true> {
           | {
               media?: T;
               src?: T;
+              alt?: T;
               caption?: T;
               display?: T;
               id?: T;
@@ -1045,6 +1056,7 @@ export interface PagesSelect<T extends boolean = true> {
                 | {
                     media?: T;
                     src?: T;
+                    alt?: T;
                     caption?: T;
                     id?: T;
                   };
@@ -1213,6 +1225,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   client?: T;
   year?: T;
   category?: T;
+  portfolioStatus?: T;
   order?: T;
   cover?: T;
   coverPath?: T;
@@ -1236,6 +1249,7 @@ export interface ProjectsSelect<T extends boolean = true> {
           | {
               media?: T;
               src?: T;
+              alt?: T;
               caption?: T;
               display?: T;
               id?: T;
@@ -1250,6 +1264,7 @@ export interface ProjectsSelect<T extends boolean = true> {
                 | {
                     media?: T;
                     src?: T;
+                    alt?: T;
                     caption?: T;
                     id?: T;
                   };
@@ -1434,6 +1449,7 @@ export interface ArticlesSelect<T extends boolean = true> {
           | {
               media?: T;
               src?: T;
+              alt?: T;
               caption?: T;
               display?: T;
               id?: T;
@@ -1448,6 +1464,7 @@ export interface ArticlesSelect<T extends boolean = true> {
                 | {
                     media?: T;
                     src?: T;
+                    alt?: T;
                     caption?: T;
                     id?: T;
                   };

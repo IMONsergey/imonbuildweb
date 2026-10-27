@@ -1,4 +1,4 @@
-/* Original editorial case narratives, with every media item in source order. */
+/* Editorial case narratives preserve the original grid and large media. */
 .case-story {--case-gutter:16px;}
 .case-story .case-hero {height:600px;min-height:600px;padding:66px var(--case-gutter) 0;position:relative;display:block;}
 .case-story--askona .case-hero {height:712px;min-height:712px;}
@@ -79,7 +79,7 @@
  .case-story-visual--portrait {width:min(60%,250px);}
  .case-story-gallery {gap:10px;margin:10px 12px;}
  .case-story-gallery[data-count="3"] {grid-template-columns:repeat(2,minmax(0,1fr));}
- .case-story-gallery[data-count="3"]>.case-media:nth-child(3) {grid-column:1/-1;}
+ .case-story-gallery[data-count="3"]>figure:nth-child(3) {grid-column:1/-1;width:calc(50% - 5px);justify-self:center;}
  .case-story-gallery[data-count="2"] {grid-template-columns:repeat(2,minmax(0,1fr));}
  .case-story-copy+.case-story-visual,.case-story-copy+.case-story-gallery {margin-top:45px;}
  .case-story-visual+.case-story-copy,.case-story-gallery+.case-story-copy {margin-top:75px;}
@@ -109,4 +109,73 @@
   .case-story-visual--overlapLeft{width:42%;margin-left:12px;margin-top:-260px}
   .case-story-visual--portraitOffset{width:45%;margin-right:12px;margin-top:-15px}
   .case-story--askona .case-story-visual--portrait{width:45%;margin-right:12px}
+}
+
+/* Captions explain the design; alt text describes the image independently. */
+.case-story-gallery>figure {margin:0;min-width:0;}
+.case-story-content figcaption {font-size:14px;line-height:1.45;color:#666;max-width:650px;padding:12px 0 20px;}
+@media(max-width:809px){
+ .case-story-content figcaption {font-size:12px;padding:9px 0 16px;}
+ .case-story-gallery[data-count="2"] {grid-template-columns:1fr;}
+}
+
+/* Askona: a continuous image-led canvas, isolated from the other case layouts. */
+.site-shell--askona {background:#111;color:#f5f5f5;--askona-gutter:clamp(20px,5.35vw,86px);}
+.site-shell--askona .site-header {height:70px;padding:0 var(--askona-gutter);grid-template-columns:1fr auto auto;gap:36px;border:0;background:transparent;color:#fff;}
+.site-shell--askona .mobile-nav {background:#111;color:#f5f5f5;--rule:#3d3d3d;}
+.site-shell--askona .header-clocks {display:none;}
+.site-shell--askona .wordmark {font-size:21px;}
+.site-shell--askona .desktop-nav,.site-shell--askona .header-contact {font-size:11px;}
+.site-shell--askona .site-header--scrolled {background:#111;}
+.site-shell--askona .site-header--open {background:#111;color:#fff;}
+.askona-editorial figure,.askona-editorial p,.askona-editorial h1,.askona-editorial h2 {margin:0;}
+.askona-editorial img {display:block;max-width:none;height:auto;}
+.askona-opening {position:relative;height:79vw;max-height:1100px;min-height:540px;overflow:hidden;background:#041c26;}
+.askona-opening__image {position:absolute;top:6%;left:16%;width:68%;}
+.askona-editorial__body {padding:0 var(--askona-gutter);max-width:1800px;margin:auto;}
+.askona-heading {display:flex;align-items:baseline;justify-content:space-between;gap:25px;padding:42px 0 28px;border-bottom:1px solid #3d3d3d;}
+.askona-heading h1 {font-size:clamp(26px,3.4vw,48px);font-weight:500;line-height:1.15;letter-spacing:-.045em;}
+.askona-heading p {font-size:clamp(11px,1.15vw,15px);color:#a6a6a6;white-space:nowrap;}
+.askona-pause {display:grid;grid-template-columns:47% 1fr;gap:0;padding:30px 0;align-items:start;}
+.askona-pause h2 {padding-top:5px;font-size:11px;line-height:1.4;letter-spacing:.08em;text-transform:uppercase;font-weight:400;color:#a6a6a6;}
+.askona-pause p {font-size:clamp(18px,2.1vw,29px);line-height:1.25;letter-spacing:-.025em;}
+.askona-diptych {display:grid;grid-template-columns:1.4fr 1fr;gap:12px;}
+.askona-detail {position:relative;overflow:hidden;border-radius:8px;aspect-ratio:.91;background:#03202a;}
+.askona-detail--mission img {position:absolute;width:245%;left:-6%;top:-130%;}
+.askona-detail--business {aspect-ratio:auto;align-self:stretch;}
+.askona-detail--business img {position:absolute;width:225%;left:-121%;top:-62%;}
+.askona-pause--small {padding:26px 0 30px;}
+.askona-pause--small p {font-size:clamp(14px,1.6vw,21px);line-height:1.45;}
+.askona-timeline {overflow:hidden;border-radius:8px;background:#071c24;}
+.askona-timeline img {width:100%;}
+.askona-history-detail {position:relative;overflow:hidden;aspect-ratio:2.42;margin-top:12px!important;border-radius:8px;background:#061d27;}
+.askona-history-detail__desktop {position:absolute;width:155%;left:-38%;top:-77%;transform:rotate(9deg);}
+.askona-history-detail__hand {position:absolute;width:64%;right:-9%;top:0;}
+.askona-end {display:flex;align-items:center;justify-content:space-between;gap:24px;border-top:1px solid #3d3d3d;margin-top:20px;padding:22px 0 28px;font-size:11px;line-height:1.5;color:#c7c7c7;}
+.askona-end p span {padding:0 8px;}
+.askona-end a {display:flex;align-items:center;gap:14px;}
+.askona-end a:hover {color:#fff;}
+.site-shell--askona a:focus-visible {outline:2px solid #55d5de;outline-offset:6px;}
+@media(max-width:809px){
+ .site-shell--askona .site-header {height:62px;grid-template-columns:1fr auto;gap:12px;}
+ .askona-opening {height:114vw;min-height:400px;max-height:800px;}
+ .askona-opening__image {top:18%;left:7%;width:86%;}
+ .askona-heading {padding:26px 0 22px;flex-direction:column;gap:10px;}
+ .askona-pause {grid-template-columns:1fr;gap:15px;padding:28px 0;}
+ .askona-pause h2 {font-size:10px;}
+ .askona-diptych {gap:8px;}
+ .askona-detail {border-radius:5px;}
+ .askona-pause--small {gap:12px;}
+ .askona-timeline {border-radius:5px;}
+ .askona-history-detail {aspect-ratio:1.35;border-radius:5px;margin-top:8px!important;}
+ .askona-history-detail__desktop {width:230%;left:-66%;top:-35%;}
+ .askona-history-detail__hand {width:94%;right:-22%;top:10%;}
+ .askona-end {align-items:flex-start;font-size:10px;gap:16px;}
+ .askona-end p {max-width:140px;}
+ .askona-end p span {padding:0 3px;}
+}
+.askona-opening,.askona-detail {background-image:url('/media/FFN0jZcyJMA4Z1LOoQu3bTkaXuM.jpg');background-size:cover;background-position:center;}
+.askona-pause p {white-space:pre-line;}
+@media(prefers-reduced-motion:no-preference){
+ .askona-end a {transition:color .2s;}
 }
