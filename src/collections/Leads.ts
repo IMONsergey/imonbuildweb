@@ -10,6 +10,8 @@ export const Leads: CollectionConfig = {
     delete: ({ req }) => req.user?.role === 'admin',
   },
   fields: [
+    { name: 'submissionId', label: 'Номер приема заявки', type: 'text', unique: true, admin: { readOnly: true } },
+    { name: 'requestHash', type: 'text', admin: { hidden: true }, access: { read: () => false } },
     { name: 'name', label: 'Имя', type: 'text', required: true },
     { name: 'email', type: 'email', required: true },
     { name: 'company', label: 'Компания', type: 'text' },

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
+import { trackPublicEvent } from '@/lib/analytics'
 
 type NavigationLink = { label: string; href: string }
 
@@ -114,30 +115,47 @@ export function LeadForm() {
   const [data, setData] = useState<FormData>(initial)
   const [state, setState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
   const [error, setError] = useState('')
+  const inFlight = useRef(false)
+  const attempt = useRef<{ signature: string; id: string } | null>(null)
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    if (state === 'sending') return
+    if (inFlight.current) return
+    inFlight.current = true
     setState('sending'); setError('')
+    const controller = new AbortController()
+    const timeout = window.setTimeout(() => controller.abort(), 20_000)
     try {
-      const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...data, source: window.location.pathname }) })
+      const body = { ...data, source: window.location.pathname }
+      const signature = JSON.stringify(body)
+      if (attempt.current?.signature !== signature) attempt.current = { signature, id: crypto.randomUUID() }
+      const response = await fetch('/api/contact', { method: 'POST', signal: controller.signal,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...body, submissionId: attempt.current.id }) })
       const result = await response.json().catch(() => ({}))
-      if (!response.ok) throw new Error(result.message || 'Не удалось отправить заявку.')
+      if (!response.ok || result.ok !== true || result.receipt !== attempt.current.id)
+        throw new Error(result.message || 'Не удалось подтвердить получение. Повторите отправку.')
+      if (!result.duplicate) trackPublicEvent('inquiry_received')
+      attempt.current = null
       setData(initial);setState('success')
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Ошибка соединения. Попробуйте позже.')
+      setError(cause instanceof Error && cause.name !== 'AbortError' ? cause.message :
+        'Связь прервалась. Данные сохранены в форме, повторите отправку.')
       setState('error')
+    } finally {
+      window.clearTimeout(timeout)
+      inFlight.current = false
     }
   }
-  return <form className="lead-form" onSubmit={submit}>
+  return <form className="lead-form" onSubmit={submit} aria-busy={state === 'sending'}>
     <div className="form-grid">
-      <label>Как к вам обращаться *<input type="text" required maxLength={120} autoComplete="name" value={data.name} onChange={e => setData({ ...data, name: e.target.value })} placeholder="Имя" /></label>
-      <label>Почта для связи *<input type="email" required maxLength={254} autoComplete="email" value={data.email} onChange={e => setData({ ...data, email: e.target.value })} placeholder="name@company.com" /></label>
-      <label>Компания<input type="text" maxLength={180} autoComplete="organization" value={data.company} onChange={e => setData({ ...data, company: e.target.value })} placeholder="Название компании" /></label>
+      <label>Как к вам обращаться *<input disabled={state === 'sending'} type="text" required maxLength={120} autoComplete="name" value={data.name} onChange={e => setData({ ...data, name: e.target.value })} placeholder="Имя" /></label>
+      <label>Почта для связи *<input disabled={state === 'sending'} type="email" required maxLength={254} autoComplete="email" value={data.email} onChange={e => setData({ ...data, email: e.target.value })} placeholder="name@company.com" /></label>
+      <label>Компания<input disabled={state === 'sending'} type="text" maxLength={180} autoComplete="organization" value={data.company} onChange={e => setData({ ...data, company: e.target.value })} placeholder="Название компании" /></label>
       <label className="form-spacer"> </label>
-      <label className="form-wide">Коротко о задаче *<textarea required minLength={10} maxLength={4000} rows={4} value={data.message} onChange={e => setData({ ...data, message: e.target.value })} placeholder="Что планируете, какой результат нужен?" /></label>
+      <label className="form-wide">Коротко о задаче *<textarea disabled={state === 'sending'} required minLength={10} maxLength={4000} rows={4} value={data.message} onChange={e => setData({ ...data, message: e.target.value })} placeholder="Что планируете, какой результат нужен?" /></label>
     </div>
     <label className="honeypot" aria-hidden="true">Ваш сайт<input tabIndex={-1} name="website" autoComplete="off" value={data.website} onChange={e => setData({ ...data, website: e.target.value })} /></label>
-    <label className="consent-line"><input type="checkbox" required checked={data.consent} onChange={e => setData({ ...data, consent: e.target.checked })} /><span>Согласен на обработку персональных данных для ответа на обращение. <Link href="/privacy-policy">Подробнее</Link>.</span></label>
+    <label className="consent-line"><input disabled={state === 'sending'} type="checkbox" required checked={data.consent} onChange={e => setData({ ...data, consent: e.target.checked })} /><span>Согласен на обработку персональных данных для ответа на обращение. <Link href="/privacy-policy">Подробнее</Link>.</span></label>
     <div className="form-actions"><button className="form-submit" disabled={state === 'sending'} type="submit">{state === 'sending' ? 'Отправляем…' : 'Отправить заявку'}<span>↗</span></button><span aria-live="polite" role={state === 'error' ? 'alert' : 'status'}>{state === 'success' ? 'Заявка получена. Свяжемся с вами.' : state === 'error' ? error : ''}</span></div>
   </form>
 }
