@@ -1,0 +1,16 @@
+{
+  "base": "23cd47e53e55e9d21b8ec5a44df57e37a9e51cba",
+  "date": "2026-11-07",
+  "tests_passed": 24,
+  "typescript": "passed",
+  "lint_errors": 0,
+  "existing_lint_warnings": 1,
+  "next_production_build": "passed",
+  "concurrent_requests": 5,
+  "stored_leads": 1,
+  "duplicate_receipts": 4,
+  "database": "isolated SQLite fixture",
+  "production_deployed": false,
+  "analytics_enabled": false,
+  "production_crm_connected": false
+}

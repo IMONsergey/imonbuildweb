@@ -652,6 +652,8 @@ export interface Article {
  */
 export interface Lead {
   id: number;
+  submissionId?: string | null;
+  requestHash?: string | null;
   name: string;
   email: string;
   company?: string | null;
@@ -1278,6 +1280,8 @@ export interface ArticlesSelect<T extends boolean = true> {
  * via the `definition` "leads_select".
  */
 export interface LeadsSelect<T extends boolean = true> {
+  submissionId?: T;
+  requestHash?: T;
   name?: T;
   email?: T;
   company?: T;

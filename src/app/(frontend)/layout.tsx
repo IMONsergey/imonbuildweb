@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import '@fontsource-variable/inter'
 import './styles.css'
 import type { ReactNode } from 'react'
+import { Analytics } from '@/components/Analytics'
+import { analyticsConfig } from '@/lib/analytics'
 
 export const metadata: Metadata = {
   title: { default: 'I’MON — бренд, продукт и digital', template: '%s — I’MON' },
@@ -10,5 +12,6 @@ export const metadata: Metadata = {
 }
 
 export default function SiteRootLayout({ children }: { children: ReactNode }) {
-  return <html lang="ru"><body><a href="#main-content" className="skip-link">К содержимому</a>{children}</body></html>
+  const analytics = analyticsConfig(process.env)
+  return <html lang="ru"><body><a href="#main-content" className="skip-link">К содержимому</a>{children}{analytics && <Analytics config={analytics} />}</body></html>
 }
